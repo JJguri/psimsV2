@@ -1,0 +1,91 @@
+{
+      "crop_name": "Maize",
+      "start_date": "01/01/1980",
+      "end_date": "31/12/2010",
+      "log": "",  
+      "reporting_frequency": "harvesting",
+      "output_variables": [
+        {"name": "dd/mm/yyyy as Date"},
+        {"name": "planting_date"},
+        {"name": "biomass"},
+        {"name": "yield"},
+        {"name": "lai_max"},
+        {"name": "DaysAfterSowing"},
+        {"name": "flowering_das"},
+        {"name": "maturity_das"},
+        {"name": "RainIn"},
+        {"name": "Temp_year"},
+        {"name": "TempIn"},
+        {"name": "RadiationIn"},
+        {"name": "IrrigationIn"},
+        {"name": "WaterUse"},
+        {"name": "actual_ET"},
+        {"name": "N_uptake"},
+        {"name": "FertiliserIn"},
+        {"name": "NO3_leaching"},
+        {"name": "N2Oemission_year"},
+        {"name": "N2OemissionIn"},
+        {"name": "CO2emission_year"},
+        {"name": "CO2emissionIn"}
+      ],
+      "initial_condition": {
+        "icrn": ".5",
+        "icrip": "100",
+        "icnd": "0",
+        "icrp": "0",
+        "icrt": "300",
+        "icrz#": "1",
+        "icrze": "1",
+        "icrag": "500",
+        "icrdp": "30",
+        "icdat": "19800101",
+        "standing_fraction": "0",
+        "water_fraction_full": "0.5",
+        "soilLayer": [
+          {"icno3": ".1"  ,"icbl": "5"  ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "15" ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "30" ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "100","icnh4": ".1"},
+          {"icno3": ".1" ,"icbl": "200","icnh4": ".1"}
+        ]
+      },
+      "weather": {
+        "file": "Generic"
+      },
+      "planting": {
+        "pdate": "1-aug",
+        "edate": "1-jun",
+        "cultivar": "HY0001",
+        "row_spacing": "700",
+        "depth": "30",
+        "sowing_density": "7"
+      },
+      "fertilizer": {
+        "automatic_fertilizer": "off",
+        "fert_criteria": "100",
+        "fert_critical": "90",
+        "type_auto": "NO3_N",
+        "initial_amount": "100",
+        "type": "NH4NO3",
+        "days_after_sowing": "45",
+        "subsequent_amount": "100",
+        "depth": "40"
+      },
+      "irrigation": {
+        "automatic_irrigation": "off",
+        "asw_depth": "600",
+        "crit_fr_asw": "0.75",
+        "efficiency": "1",
+        "allocation_limits": "off",
+        "allocation": "10",
+        "default_no3_conc": "0.0",
+        "default_nh4_conc": "0.0",
+        "default_cl_conc": "0.0"
+      },
+      "reset": {
+        "date": "1-jan",
+        "water": "yes",
+        "nitrogen": "yes",
+        "surfaceOM": "yes"
+      }
+}
