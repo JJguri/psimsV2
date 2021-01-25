@@ -1,0 +1,3232 @@
+(09/05/2024)
+
+::: PROVIDER-COASTER
+
+*** Changed the allocation scheme to block allocations
+
+(07/05/2011)
+
+::: SWIFT
+
+*** Provenance tracking in the compiled file is now disabled by default.
+    Enable with swift -enable.provenance <script>
+
+*** Variables that go out of scope are now automatically cleaned. This
+    mostly consists of nullifying various fields, but for the concurrent
+    mapper it also means removal of files
+
+*** Fixed iterate so that iterate i {} until (i > 3); does not include
+    an iteration in which i == 3.
+
+(07/01/2011)
+
+::: SWIFT
+
+*** Uninitialized variables are detected at compile time instead of causing
+    a run to hang
+
+*** A previous commit to deal with future faults occurring in the middle of
+    a deep copy would incorrectly handle multi-dimensional arrays. This is
+    now fixed.
+
+(02/17/2010)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Added prototype SGE provider
+
+*** Added handling of multi jobs using ssh
+
+
+::: SWIFT
+
+*** Fixed deadlock when iterating on an array that is being written to
+    in a foreach loop
+
+(01/21/2010)
+
+::: ABSTRACTION-COMMON
+
+*** Added stage-in, stage-out and cleanup fields to job
+    specifications.
+
+*** Added open(Input|Output)Stream methods to file resources
+
+*** Updated version to 2.4 due to major api changes
+
+(01/20/2010)
+
+::: PROVIDER-COASTER
+
+*** Use one process per node
+
+*** Added staging
+
+(07/23/2009)
+
+::: KARAJAN
+
+*** Added file:info()
+
+(07/03/2009)
+
+::: SWIFT
+
+*** New import keyword which allows other SwiftScript source files to be
+    imported.
+
+(07/01/2009)
+
+::: SWIFT
+
+*** New writeData procedure which writes data structures to files in the same
+    format as used by readData.
+
+(06/30/2009)
+
+::: SWIFT
+
+*** New parameter -condor-g for swift-osg-ress-site-catalog which causes
+    sites files to be generate which will use a local condor-g installation
+    instead of making direct GRAM submissions.
+
+(06/25/2009)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Held condor jobs are treated as failures if the heldIsFailure attribute
+    is set to true.
+
+
+::: SWIFT
+
+*** 'global' keyword to allow top level declarations to be visible in all
+    scopes.
+
+(06/18/2009)
+
+::: PROVIDER-SSH
+
+*** Added interactive authentication to auth.defaults
+
+(05/24/2009)
+
+::: PROVIDER-LOCAL
+
+*** Honor the count attribute (by starting multiple jobs)
+
+(05/17/2009)
+
+::: SWIFT
+
+*** Allow wrapper parameters to be specific in a file rather than on the
+    commandline. This trades commandline length for an extra file to stage-in
+    per job.
+    A new parameter, wrapper.parameter.mode, is introduced to control this.
+    This was feature request bug 201.
+
+(05/07/2009)
+
+::: SWIFT
+
+*** swift-log-to-cedps is removed. The functionality of generating
+    .cedps format files is available by specifying the desired .cedps files
+    in an invocation of swift-plot-log. Lack of widespread use of this
+    command means a deprecation period is probably unnecessary.
+
+(05/05/2009)
+
+::: SWIFT
+
+*** New configuration property provenance.log which controls whether verbose
+    provenance-related log information is recorded in the run log file or
+    not. By default, this is false, which means that less information is
+    output by default now than previously.
+
+(04/27/2009)
+
+::: SWIFT
+
+*** Swift 0.9 built from Swift SVN r2860 and cog SVN r2388
+
+(04/15/2009)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Support for Condor-G submissions, by setting a job specification attribute
+    of "grid" and specifying a gridResource attribute containing the string
+    to be placed into the Condor-G grid_resource classad.
+
+(03/30/2009)
+
+::: SWIFT
+
+*** Removed support for .dtm file extension which was deprecated in Swift 0.4
+
+(03/29/2009)
+
+::: SWIFT
+
+*** Added console text interface to provide live information about swift
+    runs.
+
+(03/27/2009)
+
+::: SWIFT
+
+*** Environment variable SWIFT_EXTRA_INFO, when set in an environment profile,
+    is executed with the result being recorded in wrapper logs. This allows
+    arbitrary information about the remote environment to be gathered and
+    returned to the submit side.
+
+*** The wrapper.sh and seq.sh scripts that are deployed to remote sites to
+    help with execution have been renamed to more Swift specific names, to
+    avoid collision with user-supplied files of the same name. The new names
+    are _swiftwrap and _swiftseq
+
+(03/15/2009)
+
+::: SWIFT
+
+*** The log-processing code, primarily exposed as the swift-plot-log command,
+    has been merged into the main Swift release, rather than being a separate
+    download.
+
+(03/13/2009)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Refactored common portions of providers into abstract parts
+
+*** Added condor provider
+
+(03/09/2009)
+
+::: SWIFT
+
+*** Added a throttling parallelFor and changed the swift foreach underlying
+    implementation to it. The throttling parallelFor limits the number of
+    concurrent iterations allowed, which should allow swift to scale better
+    in certain cases.
+
+(02/24/2009)
+
+::: SWIFT
+
+*** New configuration option wrapper.invocation.mode, specifiable either
+    globally in the configuration file or per-site as a profile key,
+    that configures whether wrapper script invocations are made with an
+    absolute path (as was the behaviour in Swift 0.8) or with a relative
+    path (as was behaviour in previous versions of Swift).
+
+(02/22/2009)
+
+::: SWIFT
+
+*** Recompilation will happen if a .kml file was compiled with a different
+    version of Swift to the version being invoked. This is in addition to the
+    existing behaviour where a .swift file will be recompiled if it is newer
+    than the corresponding .kml file.
+
+(02/17/2009)
+
+::: SWIFT
+
+*** There is a new command swift-osg-ress-site-catalog which will generate
+    a site catalog based on data gathered from OSG's ReSS information
+    system. This can be used by OSG users to easily generate a large number
+    of site catalog entries for sites that are likely to work.
+
+(02/14/2009)
+
+::: SWIFT
+
+*** Handling of [*] and . has changed. [*] has been broken for several
+    Swift releases, but now has some approximation of its former behaviour,
+    in a cleaner implementation.
+    [*] is now an identity operation, that is array[*] == array.
+    The structure access operator . can now take an array on the left
+    hand side. In situations where a[*].img was used, it is permissible
+    to continue to write a[*].img, or to write a.img - both of these will
+    return an array of img elements.
+
+(02/09/2009)
+
+::: SWIFT
+
+*** Procedure invocations can be made in any expression context now, rather
+    than only directly in an assignment.
+
+*** Mappings can now be made in any declaration, whether it has an assignment
+    or not. Previous a procedure call assignment and a mapping could not be
+    made in the same statement.
+
+(02/05/2009)
+
+::: SWIFT
+
+*** Tighter type checking on app blocks. Primitive types and arrays of
+    primitive types are permitted. Other types are prohibited.
+
+*** Arrays of primitive types can be passed to app blocks, and will be
+    expanded into multiple command-line parameters, one parameter per
+    array element.
+
+(01/23/2009)
+
+::: SWIFT
+
+*** Swift 0.8 built from Swift SVN r2448 and cog SVN r2261
+
+(01/14/2009)
+
+::: SWIFT
+
+*** Application success/failure status reporting can now be done using
+    CoG provider status, rather than the previous only choice of
+    using status files on the shared file system. A status.mode parameter
+    has been added to set this. It can be configured either in the
+    swift.properties file, to have effect for all sites, or can be set
+    per-site.
+
+(01/10/2009)
+
+::: SWIFT
+
+*** Console output for individual application invocation start and finish
+    is no longer shown. The progress ticker now appears more often.
+    This should give a better overview of run progress.
+
+*** More parallelisation of execution, so that some constructs which should
+    have always work now actually work. For example, mappers can take
+    values as parameters which are not known "early" in a run, and will
+    have their initialisation deferred until those parameters are ready.
+    SwiftScript programs which previously worked should still work; and
+    some programs which did not previously work should now work.
+
+(11/11/2008)
+
+::: SWIFT
+
+*** Swift 0.7 built from Swift SVN r2318 and cog SVN r2255
+
+(11/04/2008)
+
+::: PROVIDER-LOCAL
+
+*** Fixed deadlock in job submission handler caused by stderr not
+    being consumed properly
+
+(08/15/2008)
+
+::: SWIFT
+
+*** Swift 0.6 built from Swift SVN r2177 and cog SVN r2127
+
+(06/26/2008)
+
+::: KARAJAN
+
+*** WeightedHostScoreScheduler behaviour changed for low scoring sites;
+    low scoring sites have a delay between submissions, rather than the
+    previous behaviour of always taking a load of at least 2.
+
+(06/06/2008)
+
+::: SWIFT
+
+*** SWIFT_JOBDIR_PATH environment variable can be use in profiles (or
+    anywhere else that will get it to the worker script) to cause the
+    worker to copy input files to a possibly-worker-node-local working
+    directory.
+
+(04/30/2008)
+
+::: KARAJAN
+
+*** Added raceFor. It's a blend between race() and for(). It will
+    iterate in parallel until the first iteration completes.
+
+(04/29/2008)
+
+::: KARAJAN
+
+*** WeightHostScheduler initial score and load factor can now be set
+    per host, by setting properties in the BoundHost object for each
+    host: initialScore for the initial score (defaults to 0), and
+    jobThrottle (defaults to the system-wide default value, set through
+    other properties)
+
+(04/24/2008)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Added job canceling to PBS
+
+
+::: SWIFT
+
+*** PATHPREFIX environment variable is prefixed to the path before execution
+    in wrapper.sh; this variable can be set in profile entries using the usual
+    environment variables
+
+(04/14/2008)
+
+::: SWIFT
+
+*** Constant interning - this reduces the number of datasets for local values
+    created, especially when constants are used in loops.
+
+(04/09/2008)
+
+::: SWIFT
+
+*** Swift 0.5 built from Swift SVN r1783 and CoG SVN r1962
+
+(04/07/2008)
+
+::: ABSTRACTION-COMMON
+
+*** SecurityContextImpl, ServiceImpl, and ServiceContactImpl now
+    properly implement equals() and hashCode()
+
+(04/05/2008)
+
+::: PROVIDER-GT2
+
+*** Fixed data channel reuse behavior
+
+(03/26/2008)
+
+::: ABSTRACTION-COMMON
+
+*** Made a few objects serializable.
+
+*** Removed heavy use of hashtables for things where fields
+    work much better.
+
+*** Changed implementation of Identity to be more conservative
+    towards memory usage (i.e. removed the silly URI)
+
+
+::: SWIFT
+
+*** String literals now use \ as escape character - for example, use \"
+    to insert a quote into a string literal. Where \ was previously used
+    in a string literal, it is now necessary to escape it as \\
+
+(03/25/2008)
+
+::: SWIFT
+
+*** Logging performance improvement in wrapper.sh
+
+(03/15/2008)
+
+::: KARAJAN
+
+*** The WeightedHost scheduler now has a lower bound (of -10)
+    on scoring to reduce the effect of penalising a host in the case of a
+    large number of transient errors. Previously, a large number of
+    transient errors would push the score so low that the score would
+    take far too long to return to a more appropriate value.
+
+
+::: SWIFT
+
+*** Unused lrc field in site catalog removed.
+
+*** url field in site catalog execute element is now optional.
+
+(03/13/2008)
+
+::: SWIFT
+
+*** Swift v0.4 built from Swift SVN r1718 and cog SVN r1934.
+
+(03/03/2008)
+
+::: SWIFT
+
+*** Stage out wrapper log files in a similar fashion to kickstart records.
+
+(02/28/2008)
+
+::: SWIFT
+
+*** Progress ticker on stderr every 10..60 seconds
+
+*** Store kickstart records in a subdirectory with the same base name as
+    is used for log files.
+
+(02/27/2008)
+
+::: SWIFT
+
+*** SwiftScript source file line numbers are now passed deeper into the
+    compiler in order to give location information in more error messages.
+    This has resulted in a schema change for the XML intermediate form.
+
+(02/26/2008)
+
+::: SWIFT
+
+*** Better compile-time checking of variable usage. Use of undeclared
+    variables and multiple assignments to the same variable will now result
+    in a compile-time error (close to the start of a run), rather than an
+    error during execution (which may be many hours later).
+
+(02/22/2008)
+
+::: KARAJAN
+
+*** Added sys:dateFormat(pattern, value)
+
+(02/12/2008)
+
+::: ABSTRACTION-COMMON
+
+*** Finally fixed the notification order. A task is now
+    guaranteed to go through the complete status lifecycle
+    and that no out-of-order status events will occur (e.g.
+    no Active after Completed). 
+
+
+::: KARAJAN
+
+*** Added the maxSubmissionTime parameter to the score scheduler.
+    It's not strictly enforced, but the submission time of a job
+    submission task is now part of the feedback loop. The submission
+    time contributes to the score linearly and in addition to the other
+    things (such as successFactor). If the submission time
+    is 0.5s, the contribution is 0. If the submission time of a job
+    is exactly maxSubmissionTime, then the contribution is 
+    -successFactor.
+
+(02/11/2008)
+
+::: KARAJAN
+
+*** Added some code to store stack frames of less than 5 elements
+    in a less memory consuming structure that HashMap.
+
+
+::: PROVIDER-GT2
+
+*** The last commit broke things (mlst seems picky).
+
+(02/01/2008)
+
+::: PROVIDER-GT2
+
+*** Missed some spots on the data channel reuse.
+
+(01/25/2008)
+
+::: SWIFT
+
+*** @arg now takes a second optional argument which stands for a default
+    value in case the command line argument is missing.
+
+(01/14/2008)
+
+::: SWIFT
+
+*** Overloaded '+' operator to allow string concatenation
+
+(01/05/2008)
+
+::: SWIFT
+
+*** Multidimensional array handling. Can now declare arrays like this:
+       file f[][];
+    and refer to elements like this:
+       f[1][1]
+    f[1] refers to a one dimensional array, in the style of Java arrays.
+
+(12/28/2007)
+
+::: PROVIDER-SSH
+
+*** Fixed passing of empty arguments
+
+(12/18/2007)
+
+::: SWIFT
+
+*** r1214 made type specification illegal in a foreach but still recognised it
+    and threw an error.  This commit removes recognition of that from the
+    parser entirely (as was intended to eventually happen when r1214 was made)
+
+*** Complete removal of "while" statements from the language.
+    They do not seem to have a use, and haven't worked for some months
+    due to their removal from the XML intermediate form.
+
+(12/07/2007)
+
+::: SWIFT
+
+*** Deprecated use of .dtm extension for source files. Use .swift instead.
+    Support for .dtm will be dropped eventually.
+
+(12/03/2007)
+
+::: PROVIDER-GT2
+
+*** Added data channel reuse mode for GridFTP if the server
+    version is 2.3. Presumably more versions support this and
+    they should eventually be added.
+
+
+::: SWIFT
+
+*** Added -runid parameter that specifies the run identifier on the command
+    line, rather than having it automatically generated. This must
+    be unique for every invocation of a workflow and is used in several
+    places to keep files from different executions cleanly separated. By
+    default, a datestamp and random number are used to generate a run
+    identifier. When using this parameter, care should be taken to ensure
+    that the run ID remains unique with respect to all other run IDs that
+    might be used, irrespective of (at least) expected run location,
+    workflow or user.
+
+(11/23/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Fixed broken isDirectory file operation
+
+*** Caching of file resources happens on both host name, port and
+    provider rather than just the host name
+
+
+::: PROVIDER-SSH
+
+*** Added connection caching and use of SSH channels, and their management
+    (tailored for OpenSSH servers: 10 max concurrent unauthenticated 
+    connections, and 10 max channels per connection)
+
+*** Added a file resource for SSH (uses the SFTP subsystem)
+
+*** Rewrote the execution provider to:
+    - always start /bin/sh instead of the user shell
+    - use the channel management scheme above
+
+
+::: SWIFT
+
+*** new parameter, execution.retries to specify the number of time a job
+    will be retried if it fails (giving a maximum of 1 + execution.retries
+    attempts at execution)
+
+*** Added filesystem site catalog element. Looks like 'execution' and
+    allows, for example, SSH to be used for remote filesystem access.
+
+(11/20/2007)
+
+::: SWIFT
+
+*** Many unused fields in the sites catalog, sites.xml, are now optional.
+
+*** Nested statement blocks are no longer supported. These saw little use
+    and were buggy.
+
+(11/01/2007)
+
+::: SWIFT
+
+*** Concurrent mapper now generates filenames in a relatively deep directory
+    hierarchy in order to reduce the number of files in each directory.
+    There is a (hard-coded) parameter which determines how many files and
+    subdirectories will be permitted at each level. This parameter is set
+    to 25.
+
+*** move various job related directories into subdirs on site-side.
+    at present, the subdirs are named by a single digit directory.
+
+(10/31/2007)
+
+::: SWIFT
+
+*** Added an external mapper to allow invoking a script to do the
+    actual mapping
+
+(10/30/2007)
+
+::: PROVIDER-GT2
+
+*** Added totalSize implementation to data sources such that
+    the JGlobus GridFTP client sends the ALLO command before
+    a transfer.
+
+(10/08/2007)
+
+::: SWIFT
+
+*** Added readData function
+
+(10/03/2007)
+
+::: KARAJAN
+
+*** Converted more things to use the CWD below
+
+
+::: PROVIDER-GT2
+
+*** Fixed some issues with the credentials used for the callback
+    handler.
+
+
+::: SWIFT
+
+*** Profile names/keys in tc.data are now case insensitive
+
+(10/02/2007)
+
+::: SWIFT
+
+*** Swift 0.3 release candidate 1 built from swift svn r1312, cog r1769
+
+(09/28/2007)
+
+::: SWIFT
+
+*** Clustering is now disabled by default.
+
+*** Over the past week, a number of changes have been made to the logging
+    output of Swift to make it richer. This is likely to break existing
+    log processing code.
+
+(09/19/2007)
+
+::: KARAJAN
+
+*** Added hostCount argument to task:execute. This means that, in
+    general, count should be understood to mean "process count"
+
+*** Added batch argument to task:execute. It allows for
+    "fire and forget" jobs.
+
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Cobalt: 'count' attribute mapped to '-c'. The default should
+    be figured by cqsub from 'hostCount'. Looking at the cqsub
+    code, it seems like count = 2 * hostCount on a BG/L and
+    count = 4 * hostCount on a BG/P. That's in vn mode. In
+    co mode count = hostCount.
+
+*** Cobalt: 'hostCount' attribute mapped to '-n', with a default
+    of 1
+
+
+::: SWIFT
+
+*** Subtle changes to the behaviour of AbstractFileMapper and its subclasses
+    (primarily any of the mappers that take prefix, suffix or location
+    parameters). The behaviour of prefixes and suffixes was not consistent
+    between forward and reverse mapping - this has been made more consistent.
+    Prefixes are now added when mapping directly as strings, rather than
+    passing them through the path component mapping code first. Handling of
+    separators between fields is slightly changed to accomodate this - a
+    special case for the first separator is removed. Detection of the
+    types of fields/indices in a path is now done using Path.Entry methods
+    rather than guessing based on the first character of the field name.
+
+*** Added lots of debug logging to AbstractFileMapper
+
+(09/18/2007)
+
+::: SWIFT
+
+*** Add a basic iterate {} language construct, and an @extractint function
+    that can be used with it.
+
+*** Add a @regexp language function which provides more regular expression
+    functionality than is provided by @strcut. This is intended to allow
+    the regular expression mapper to be removed (with uses of it replaced
+    with the single file mapper and the @regexp function)
+
+(09/13/2007)
+
+::: KARAJAN
+
+*** Added a fixed rate submit queue. It can be enabled by specifying
+    the maxSubmitRate property for a host. The value is a floating
+    point number. So if you wanted at most one job submitted every
+    ten seconds, the rate would be 0.1.
+
+
+::: SWIFT
+
+*** Changed lazy error default from true to false. This affect how
+    Swift handles workflows when an error occurs. See the userguide
+    for further details.
+
+(09/10/2007)
+
+::: SWIFT
+
+*** Removed ability to specify type of index variable in foreach loops. This
+    type was never checked. Any programs which specify the type in a foreach
+    statement will need a code modification to remove that type specification.
+    Making such a change will not modify workflow behaviour.
+
+(09/08/2007)
+
+::: SWIFT
+
+*** Changed the way arguments are passed to the wrapper. This
+    should be more resilient to broken middleware that doesn't
+    properly quote arguments.
+
+(09/06/2007)
+
+::: KARAJAN
+
+*** Partial ability to have a CWD for each separate execution,
+    if done from the same JVM.
+
+(09/04/2007)
+
+::: SWIFT
+
+*** Updated wrapper to be more thorough at diagnosing problems.
+
+(08/29/2007)
+
+::: SWIFT
+
+*** Moved @arg to swiftscript namespace/package
+
+*** @filenames disappeared at some point in time. It is back.
+
+*** Fixed some issues with paths returned by fringePaths being
+    parsed into the wrong things. It points out that one should 
+    be careful about methods typically used to get some human 
+    readable representation of data (such as toString()) being 
+    relied on to provide any kind of functional consistency.
+
+(08/28/2007)
+
+::: KARAJAN
+
+*** "off" is now a valid value for throttling parameters
+
+
+::: PROVIDER-DCACHE
+
+*** Fixed broken dependency (abstraction-local instead of
+    provider-local)
+
+
+::: SWIFT
+
+*** Added throttle.score.job.factor to swift.properties (the functionality
+    was previously available by manually hacking scheduler.xml)
+
+*** Throttle options now accept "off" as a valid value
+
+*** Put @arg back in
+
+*** Changes the configuration to allow loading a specific file even
+    if the defaults cannot be found.
+
+*** Added PBS and dCache providers as dependencies
+
+*** Typechecks on arrays would fail (this was introduced by the type
+    system changes). Fixed.
+
+*** Assignments from integer[] to float[] should not fail for type
+    reasons (nor should passing an integer[] for a float[] fail the
+    typecheck).
+
+(08/23/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Added ability to query for a list of providers supporting
+    a certain type of task handler.
+
+*** Deprecated Service.JOB_SUBMISSION. Use Service.EXECUTION.
+
+
+::: KARAJAN
+
+*** Added task:availableHandlers(*type). In case people don't
+    have to manually add handlers.
+
+
+::: PROVIDER-DCACHE
+
+*** Initial commit
+
+
+::: SWIFT
+
+*** A few changes to the way types work. Whether something is an array
+    or not is part of the type now.
+
+*** Cleanups to the way things get stored and mappers
+
+*** It's not necessary to manually add task handlers any more. All the
+    available ones are added automatically
+
+(08/22/2007)
+
+::: KARAJAN
+
+*** failOnJobError=false would not make task:execute() return
+    anything if the job succeeded. Now it returns a 0.
+
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** The cobalt provider was not passing command line arguments
+    to the job
+
+*** Added -k <kernel profile> option for cobalt. The spec attribute
+    is "kernelprofile".
+
+*** Configurable exit code extraction regexps (Kevin Harms points
+    out that looking for a string containing "BG/L job exit status"
+    is likely to not work on a BG/P). D'oh!
+
+(08/20/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Made the way redirection works more consistent. As it was, a flag
+    (JobSpecification.setRedirected(true)) would be used to indicate
+    that redirection was desired. That, combined with whether the 
+    stdout files were null or not, would dictate, in twisted ways, whether 
+    the output would be redirected to a remote file, a local file, or an
+    in-memory object. The way it works now is that for each file (stdin, 
+    executable, stdout, stderr) a location can be specified. The location
+    can be either memory, local or remote, or an arbitrary combination
+    of these. So, for example, the stdout could be redirected to both
+    a remote file and an in-memory object, while the stderr would be 
+    redirected to a local file. Not all providers will support all
+    combinations of these (GT2 will probably only be able to redirect
+    to one thing at a time). A few things were also deprecated as a 
+    consequence: 
+       JobSpecification.setRedirected
+       JobSpecification.setLocalExecutable
+       JobSpecification.setLocatInput
+
+*** Oh, and application failures caused by non-zero exit codes now have
+    their own exception (JobException), which can also be used to 
+    retrieve the exit code nicely.
+
+
+::: KARAJAN
+
+*** Added failOnJobError flag to task:execute(). Should it be set
+    to false, it would prevent task:execute() from failing when 
+    a non-zero exit code is detected from the application, and 
+    return the exit code instead.
+
+*** Added stdoutLocation and stderrLocation to task:execute().
+    One can now put these two in either the stdout/stderr channels,
+    local files, remote files, or any possible combination of these
+    (assuming the providers support these).
+
+
+::: PROVIDER-GT2
+
+*** Updated to use the new redirection stuff
+
+
+::: PROVIDER-LOCAL
+
+*** Rimplemented redirection to conform to new things in the
+    interfaces
+
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Redirection updates
+
+
+::: PROVIDER-SSH
+
+*** Redirection updates
+
+-------------------------------2.2----------------------------------
+
+(08/16/2007)
+
+::: KARAJAN
+
+*** task:execute() would redirect the job stderr to stdout. Fixed.
+
+*** Some space optimizations on commonly (read heavily) used types.
+
+*** Global variables set to the Java "null" would be reported as
+    not found. Fixed.
+
+*** task:transfer now sets thirdPartyIfPossible to true by default
+    when the third party argument is not specified. This means that
+    third party transfers would be automatically attempted if possible,
+    while falling back to simulating them if not. If one needs to force
+    third party transfer to always off or always on, the thirdParty 
+    argument would do the trick.
+
+*** sys:readFile (or sys:file:read) would add extra newlines of their
+    own for no good reason. Fixed.
+
+*** sys:file:write used to flush the stream after every write. Not
+    any more.
+
+*** Fixed a bug in the scheduler which would cause it to endlessly
+    wait for resources that weren't there to begin with before
+    scheduling certain tasks.
+
+
+::: SWIFT
+
+*** A different site catalog element <execution> that fills a similar role
+    to the existing <jobmanager> element with a syntax more sympathetic to
+    submitting via non-GRAM submission systems.
+
+(08/10/2007)
+
+::: PROVIDER-GT2
+
+*** Removed a puzzling thing. Seems like most put/get methods in
+    the file resource would ask the for the current directory only
+    to not use it at all.
+
+(07/31/2007)
+
+::: SWIFT
+
+*** Prototype structured_regexp_mapper for performing a regexp transformation
+    on the filenames of one dataset to produce another dataset with the
+    same structure but different leaf filenames.
+
+(07/30/2007)
+
+::: SWIFT
+
+*** All simple types are now passed around inside of DSHandle objects,
+    instead of sometimes inside DSHandles and sometimes as rawer Java
+    objects.
+
+*** Swift operators now implemented in their own class, rather than using
+    the Karajan implementation.
+
+*** There are now two division operators, / and %/ of which the first (/)
+    returns a floating point value and %/ returns an integer value.
+    The mod operator is relabelled %% instead of %.
+
+*** Mappers can now map files on remote sites (use protocol://host/path)
+    for file name(s), and the engine can actually stage things in and out
+    from/to arbitrary locations
+
+*** Moved some path manipulation function to Java
+
+(07/29/2007)
+
+::: SWIFT
+
+*** Use /dev/urandom by default on UNIX platforms to avoid large
+    delays at start-up (and Yoya knows when else). It will lower the
+    security of anything that relies on java.security.SecureRandom 
+    for RNG, but there is no nice way to initialize different SecureRandom
+    instances with different seed generators.
+
+(07/28/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Added a thirdPartyIfPossible property to file transfer specifications.
+    The behavior of the existing thirdParty flag in implementations would
+    be to fail if the flag is set to true, but no actual third party transfer
+    is possible (due to, for example, the providers not supporting it).
+    The new flag allows a lenient request to be made. If this flag is set, 
+    implementations should attempt 3rd party transfers if possible, but
+    fall back to simulating it if necessary.
+
+
+::: PROVIDER-WEBDAV
+
+*** Added a http provider that can fetch documents and/or files
+    through the http protocol
+
+
+::: SWIFT
+
+*** Removed break; statement from the language. It was previously unimplemented
+    and acted as a no-op. Any code which now does not compile can be made to
+    compile by removing the break statements. No other changes should be
+    necessary, and no behavioural changes should result.
+
+(07/19/2007)
+
+::: SWIFT
+
+*** Swift 0.2 release made from Swift SVN r915 and CoG SVN r1658
+
+(07/02/2007)
+
+::: KARAJAN
+
+*** A few size/performance optimizations on argument related things
+
+*** Closing of ordered channels is not done recursively any more.
+    For large parallelism, this could cause a stack overflow 
+    (see http://bugzilla.mcs.anl.gov/swift/show_bug.cgi?id=72)
+
+(05/21/2007)
+
+::: SWIFT
+
+*** Add a mapper, array_mapper, which maps from a string array of filenames.
+    This was requested in bug 27.
+
+(05/18/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Better (more consistent) way to specify delegation
+
+
+::: PROVIDER-GT2
+
+*** Updated delegation bits
+
+(04/27/2007)
+
+::: SWIFT
+
+*** Fixed a deadlock in the remote caching code.
+
+(04/12/2007)
+
+::: SWIFT
+
+*** Marker types (that is, types with no content) can now be specified without
+    an empty {} block. So what was previous written as:
+
+      type imagefile {};
+
+    can now be written as
+
+      type imagefile;
+
+(04/11/2007)
+
+::: KARAJAN
+
+*** Fixed global throttling of job submission
+
+
+::: SWIFT
+
+*** CSV mapper will now take commas as a field separator (in addition to the
+    existing behaviour of space and tab)
+
+(03/23/2007)
+
+::: SWIFT
+
+*** Fixed -resume
+
+*** Fixed code dealing with command line arguments
+
+(03/16/2007)
+
+::: SWIFT
+
+*** Labels in graphs are quoted now
+
+(03/12/2007)
+
+::: SWIFT
+
+*** Cache remote directory structure creation.
+
+(03/11/2007)
+
+::: ABSTRACTION-COMMON
+
+*** The file operation task handler used many cascading ifs with
+    equalsIgnoreCase tests. Better to convert the string to lowercase
+    in the beginning
+
+*** Cleaned up some of the task handlers. They kept lists or vectors
+    of tasks in various states and did O(n) operations for things that
+    they aren't even used for in general.
+
+
+::: KARAJAN
+
+*** Use a thread pool for submission instead of starting
+    a new thread every time. The thread pool is a cached
+    thread pool. It starts new threads as needed and shuts them
+    down after a certain idle time.
+
+
+::: PROVIDER-LOCAL
+
+*** Improved the implementation of the execution provider:
+    - using readers added an extra layer of unnecessary 
+    character manipulation/conversion
+    - when there is only file redirection, there was some
+    unnecessary task output redirection
+
+(03/07/2007)
+
+::: PROVIDER-GT2
+
+*** Increased GridFTP default timeout from 12s to 30s
+
+(03/03/2007)
+
+::: SWIFT
+
+*** The default values for mapping parameters handling below
+    did not allow implementations to get the value of an 
+    optional parameter by checking if it's not null. This can
+    now be done by specifying null as a default value.
+
+(03/02/2007)
+
+::: SWIFT
+
+*** Added log message to print full stack trace of exceptions
+    that cause Swift to fail
+
+*** Better handling of default values for mapping parameters,
+    and better handling of mapping parameter errors.
+
+(03/01/2007)
+
+::: SWIFT
+
+*** Fixed @arg.
+
+(02/27/2007)
+
+::: KARAJAN
+
+*** AllocateHost was leaking a few things in the schedulers.
+    Fixed.
+
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** I think Process.waitFor() can deadlock if there's too
+    much stuff on std*. The processing of stdout from qstat
+    is now done while the qstat process is running.
+
+(02/23/2007)
+
+::: PROVIDER-GT2
+
+*** Fixed:
+      http://bugzilla.globus.org/globus/show_bug.cgi?id=4996
+      http://bugzilla.globus.org/globus/show_bug.cgi?id=5021
+
+*** There was some useless parse(rsl) call, since the rsl was
+    constructed using the RSL API in JGlobus, so it should have
+    been correct in the first place.
+
+(02/19/2007)
+
+::: SWIFT
+
+*** Fixed a race in the cache
+
+(02/16/2007)
+
+::: SWIFT
+
+*** Fixed stdin issue (bug #19)
+
+*** Fixed an issue with vdl:cacheAndLockFile considering files for
+    which the transfers failed as being actually cached.
+
+(02/14/2007)
+
+::: KARAJAN
+
+*** Fixed some issues with comments not being parsed correctly
+
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Fixed Cobalt
+
+
+::: SWIFT
+
+*** Print usage  and exit instead of a nasty exception if the input
+    file does not exist (bug #15)
+
+(02/13/2007)
+
+::: SWIFT
+
+*** Ongoing parser changes
+
+*** Make sure /bin and /usr/bin are added to the path in the
+    wrapper.
+
+*** When there's a NPE or CCE in an exception chain that causes the
+    execution to fail, the full stack trace is printed.
+
+(02/12/2007)
+
+::: PROVIDER-LOCALSCHEDULER
+
+*** Initial version
+
+(02/11/2007)
+
+::: SWIFT
+
+*** SwiftScript syntax change: The function invocation (i=q)=f(1) must
+    be written with the () parentheses surrounding the return variables.
+    Previously, the parentheses were optional, and the same could be written
+    as i=q=f(1); This is no longer the case.
+
+(02/10/2007)
+
+::: SWIFT
+
+*** On-going parser changes primarily aimed at producing more user-friendly
+    syntax errors but also including these syntax changes:
+      - parser no longer recognises vestigial for(;;) construct
+      - parser allows type declarations and other top level statements
+        (aside from namespace declarations) to be mixed together. Previously,
+        all type declarations had to occur before other statements.
+
+(02/09/2007)
+
+::: SWIFT
+
+*** Reorganized logging. Log always goes to a file. Console
+    gets little stuff unless -verbose or -debug are used.
+
+*** Use a unified run id which is used as a prefix for the
+    log, the restart log, the provenance graph, and the 
+    remote run directories
+
+*** Hmm. Did I mess up the dates on the changelog?
+
+*** Added default properties that work in case
+    swift/etc/swift.properties is missing some.
+
+(02/08/2007)
+
+::: SWIFT
+
+*** Added option to always transfer Kickstart records
+
+*** Improved error handling for compilation of SwiftScript code
+
+(02/07/2007)
+
+::: SWIFT
+
+*** Added Kickstart support (optional)
+
+*** Added support for GLOBUS profiles in the site catalog
+
+*** Updated error translations to include a pointer to the
+    Kickstart info if available
+
+(02/06/2007)
+
+::: PROVIDER-GT2
+
+*** The job task handler now shuts down callback handlers from
+    JGlobus if they have no more registered jobs.
+
+(02/05/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Added two methods to FileResource to allow transfers that provide
+    progress information
+
+
+::: KARAJAN
+
+*** Added file resource throttling
+
+
+::: SWIFT
+
+*** Renamed a few things to swift, including:
+    - vdl2.properties -> swift.properties
+    - ~/.vdl2 -> ~/.swift (the old config is still read though)
+    - the log4j "class" for things in Karajan (vdl2 -> swift)
+    - vdlrun -> swift
+
+*** swift (vdlrun) will also work with .dtm files now, and compile
+    them on the fly.
+
+*** Most of the throttle parameters are now settable through
+    swift.properties
+
+*** Made some preliminary (and incomplete) changes towards integrating
+    kickstart.
+
+(02/02/2007)
+
+::: SWIFT
+
+*** Renamed a few mappers to better reflect the mapper functionalities.
+
+*** Added warnings mechanism
+
+*** No more Karajan stack traces in errors (only simple chained messages).
+    Those stack traces belong to the logging domain
+
+*** Capture cleanup problems and print them as warnings
+
+*** Added a few more error translation
+
+(01/30/2007)
+
+::: SWIFT
+
+*** Fixed vdlc to return a non-zero exit code when text->xml conversion
+    fails.
+
+(01/28/2007)
+
+::: ABSTRACTION-COMMON
+
+*** Changed IOExceptions in file resources to IrrecoverableResourceExcepion.
+    It's a sub-class of FileResourceException, it allows chaining, 
+    and it is more intuitive.
+
+*** Added better handling of irrecoverable prblems for caching handlers.
+
+
+::: PROVIDER-WEBDAV
+
+*** Updated file resource exceptions
+
+-------------------------------2.1----------------------------------
+
+
+::: SWIFT
+
+*** Added support for non-standard attributes on the GLOBUS
+    prefix in tc.data.
+
+(01/21/2007)
+
+::: KARAJAN
+
+*** [u]parallelFor didn't handle concurrent exceptions correctly.
+    Fixed.
+
+(01/18/2007)
+
+::: KARAJAN
+
+*** Fixed exceptions in failing grid tasks
+
+*** Fixed the cache family of functions to properly deal with
+    exceptions
+
+
+::: SWIFT
+
+*** Fixed an issue with dependent mappers and arrays
+
+*** Fixed the concurrent mapper
+
+(01/12/2007)
+
+::: SWIFT
+
+*** Added mapping dependencies.
+
+(01/06/2007)
+
+::: KARAJAN
+
+*** Improvements to scheduler performance.
+
+*** Some fixes to a problem with task events.
+
+*** Fixed the weighted host scheduler locking up.
+
+
+::: SWIFT
+
+*** Added a cache around the Pegasus TC file implementation.
+
+*** Added vdl:log as a wrapper around log4j.
+
+*** Fixed an issue in the cleanup with the same file being
+    deleted multiple times concurrently.
+
+(01/04/2007)
+
+::: SWIFT
+
+*** Added a simple clustering mechanism for small jobs.
+
+*** Added a "-dryrun" argument to vdlrun. If graph generation
+    is enabled, this should produce a graph without running
+    any actual jobs.
+
+*** Fixed an issue with caching where a file could have
+    been purged more than once
+
+(01/01/2007)
+
+::: SWIFT
+
+*** Modified AbstractFileMapper to expose local variables as protected
+
+*** Added a RegularExpressionMapper to do file name conversion based on regexp
+
+*** Added a DirectoryMapper to map a list of files from a directory as an array
+
+*** Added a CSVMapper to map a CSV (Comma-Separated Values) file into a logical structure
+
+(12/30/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Added FILEINFO operation to the FileOperationSpecification. It
+    returns a GridFile which contains information about a file such
+    as size, permissions, etc.
+
+-------------------------------2.2----------------------------------
+
+
+::: KARAJAN
+
+*** Began simplifying the way karajan exceptions are implemented.
+
+*** Added file:size()
+
+*** generateError() has throw() as an alias, and choice() has
+    try() as an alias. choice() doesn't make much sense and will
+    eventually be removed.
+
+*** Added exception(message, prev). It can be used nicely with
+    throw() to chain exceptions.
+
+*** Updated exclusive(on=). Without the "on" argument, it defines
+    a global mutual exclusion region (no other exclusive 
+    block witout the "on" argument can be running concurrently).
+    With the "on" argument specified, it will treat the value
+    as defining a token that defines the exclusion criteria (i.e.
+    no two exclusive blocks with the same value passed to the
+    "on" argument can be executed concurrently)
+
+************************** v0.35 ***************************
+
+
+::: SWIFT
+
+*** A new vdlrun that is specific to VDL2.
+
+*** Added an error translator (based on regular expressions)
+    that can be used to provide improved error messages
+
+*** Added a lazy errors mode in which errors in application
+    execution are aggregated and reported only once at the
+    end
+
+*** Added provenance graph generation
+
+*** Added a control mechanism for managing remote storage
+    usage
+
+*** Cleanups
+
+------------------------- 0 rc 3 ---------------------------
+
+(12/28/2006)
+
+::: KARAJAN
+
+*** Added a mechanism in the schedulers to distinguish between
+    resources not being found because of permanently unsatisfiable
+    constraints or temporary load conditions. The heuristics used
+    before were broken.
+
+*** Fixed a memory leak in the schedulers with constraints not
+    being removed after a task was done or failed.
+
+*** Some cleanups in the schedulers.
+
+************************** v0.34 ***************************
+
+
+::: SWIFT
+
+*** The heuristics (in CoG) used to detect if a task can ever
+    run (due to constraints as opposed to temporary load 
+    conditions) were broken and the issue was fixed.
+
+(12/23/2006)
+
+::: SWIFT
+
+------------------------- 0 rc 2 ---------------------------
+
+*** svn copy is broken so I'm noting the revision here: 115
+
+(12/22/2006)
+
+::: ABSTRACTION
+
+Version 2.1
+
+- Cleaned up some of the FileResource interfaces/implementations
+
+(12/14/2006)
+
+::: SWIFT
+
+*** Fixed the default mapper to be concurrent_mapper
+
+*** Added passing of tc.data profiles to the job (e.g
+    user-defined environment variables, jobtype, count, etc.)
+
+------------------------- 0 rc 1 ---------------------------
+
+(12/13/2006)
+
+::: KARAJAN
+
+*** Sped up the parser a little
+
+(12/12/2006)
+
+::: KARAJAN
+
+*** Fixed service to properly handle elements defined on the
+    other side.
+
+*** Cleaned up the xstream conversion exception a bit
+
+*** Removed files belonging to the old Axis based service
+
+(12/07/2006)
+
+::: KARAJAN
+
+*** Schedulers fail now when no resources are available for a
+    task but no tasks are running. The guess is that suitable
+    resources will never be available for the task. 
+    The checking of such conditions should be done in a better
+    way.
+
+
+::: SWIFT
+
+*** Added dynamic loading of the TC file
+
+*** Added cleanup which is done at the end of the
+    whole run
+
+(12/06/2006)
+
+::: SWIFT
+
+*** Moved to CI SVN
+
+*** Added tests directory
+
+(12/05/2006)
+
+::: KARAJAN
+
+*** Added support for the .kml extension. This is only intended
+    to allow the loader to load files with the .kml extension
+    and interpret them as containing XML Karajan scripts (so
+    the contents is the same as that for .xml files)
+
+*** Added DOTALL mode to str:matches()
+
+*** Fixed the exit code to not be 0 if the execution fails
+
+(11/30/2006)
+
+::: KARAJAN
+
+*** Updated the adaptive scheduler
+
+*** fixed allocateHost() to actually tell the scheduler when it
+    is done.
+
+(11/28/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Cleaned up file resources:
+      - removed GeneralException and replaced it with FileResourceExcepion
+        and IOException (to distinguish between protocol level errors
+        and communication problems)
+      - added an AbstractFileResource class and moved most of the common
+        things in the implementations there.
+
+
+::: PROVIDER-GT2
+
+*** Cleaned up the file resource implementations
+
+
+::: PROVIDER-LOCAL
+
+*** Updated the file resource implementation
+
+
+::: PROVIDER-WEBDAV
+
+*** Cleaned up the file resource implementation
+
+(11/24/2006)
+
+::: KARAJAN
+
+*** Fixed sort() to not ignore descending= and to not convert
+    values to strings before performing the sort.
+
+*** Also fixed ignoreErrors to do DOTALL matching
+
+(11/22/2006)
+
+::: KARAJAN
+
+*** Added once(). It works like cacheOn(), but it is guaranteed
+    (at the expense of no bounds on the memory)
+
+*** Fixed the adaptive scheduler
+
+*** Partially fixed cache/cacheOn to work better when things
+    fail
+
+*** Enabled DOTALL mode in restartOnError (note to self: do this
+    for the rest of the regexp error handling things) such that
+    "." will also match newline characters
+
+*** A slightly better uid() which returns a more compact string
+
+
+::: SWIFT
+
+*** Changed to a pure Karajan adaptive scheduler instead
+    of a Pegasus site selector
+
+*** Added "client-side-caching" of remote files
+
+*** Added a basic wrapper to capture exit codes and do other
+    work before and after executing the job
+
+(11/06/2006)
+
+::: KARAJAN
+
+*** Changed the way the virtual hosts work. Until now, the
+    first task using a virtual host would bind it. The change
+    consists in making allocateHost asynchronous by queuing a 
+    special task when constraints are used. This achieves the
+    same purpose as virtual hosts (i.e. push the allocation
+    choice to the scheduler) but when constraints are used, the
+    host "returned" by allocateHost is bound and not virtual 
+    (i.e. you can print it out).
+
+*** Added constraint checkers to the scheduler. They can be used
+    to enforce various constraints on both the task and the
+    resource when mathcing them (not unlike the Condor match maker).
+
+*** Changed the schedulers to use constraint checkers.
+
+*** Updated the way element definitions are stored internally.
+    Previously a wasteful HashSet (backed by a HashMap) were
+    used. Considering that namespace overloaded and overriden
+    definitions are somewhat rare, this was a waste of space.
+    It is hoped that the new way of doing things is more 
+    conservative on memory at insignifficant losses (if any)
+    in performance.
+
+(10/24/2006)
+
+::: KARAJAN
+
+*** An attempt at fixing a concurrency bug in the code
+    that keeps returns of parallel() and parallelFor()
+    in order.
+
+(10/23/2006)
+
+::: KARAJAN
+
+*** the fix on task:execute(arguments=...) broke passing
+    arguments as a string. Hopefully it's fixed this time
+
+
+::: PROVIDER-LOCAL
+
+*** made std* relative to the job directory
+
+(10/18/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Added a MKDIRS file operation (it creates a full directory path)
+
+*** Asynchronously stop cached resources
+
+
+::: KARAJAN
+
+*** dir:make() now does a mkdirs() rather than mkdir()
+
+
+::: PROVIDER-GT2
+
+*** Added a mkdirs implementation for the file resource
+
+
+::: PROVIDER-LOCAL
+
+*** Updated file resource to support createDirectories
+
+
+::: PROVIDER-WEBDAV
+
+*** Updated file resource to support createDirectories
+
+(10/17/2006)
+
+::: KARAJAN
+
+*** Added the possibility to share schedulers (if in the same JVM
+    instance) between executions.
+
+*** Made sure the event bus is initialized in all cases
+
+(10/16/2006)
+
+::: KARAJAN
+
+*** Make task:execute(arguments=...) work with vargs
+
+(10/14/2006)
+
+::: KARAJAN
+
+*** Fixed some of the examples
+
+*** Fixed missing true() and false() functions and typo in the
+    viewer
+
+*** Updated the viewer to treat assignments and echo() as atomic
+
+(10/11/2006)
+
+::: KARAJAN
+
+*** Added sys:unique(). It returns its arguments asynchronously, but
+    each argument is returned only once
+
+*** Changed the tasks to post an event instead of calling the caller
+    directly. This is supposed to release shared notification threads
+    faster to increase concurrency. However, measurements show little
+    improvements.
+
+*** Changed the way futures throw exceptions. Until now exceptions in
+    futures would cause the thread which started the future to 
+    nondeterministically fail whenever the exception occured. That
+    didn't sound right. In the new model attempting to use the value
+    of a future would be the exact operation throwing the exception.
+    Additionally, a future, if not used, would fail silently. 
+    Furthermore, if a failure occurs in the future thread after the 
+    value of a future is calculated, the value will be available and
+    the failure will be ignored. The last part is somewhat questionable, 
+    but likely necessary. Due to the way futures work, the exact scheduling
+    of threads may create nondeterminism in the behaviour of things.
+    Example:
+
+        f := future(
+            "I am a future value"
+            generateError("I was destined for /dev/null")
+        )
+
+        print(f)
+
+    In the above example, the program will finish successfully. If print(f)
+    was to fail because of the error, it would largely depend on whether, 
+    after the generation of the future value, print(f) or generateError(...)
+    would be scheduled first. Instead of risking nondeterminism here, print(f)
+    will always succeed because semantically it is correct. But this still
+    leaves an error going unreported.
+
+(10/10/2006)
+
+::: PROVIDER-SSH
+
+*** Fixed hosts.xml file creation.
+
+(10/09/2006)
+
+::: PROVIDER-GT2
+
+*** Use JGlobus RSL classes to construct the RSL in a structured way.
+    This does proper quoting and possibly eliminates other errors.
+
+(10/06/2006)
+
+::: PROVIDER-GT2
+
+*** Use textual GRAM messages instead of the error code
+
+(10/05/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Cleaned up the JobSpecification interface and the implementation
+
+
+::: KARAJAN
+
+*** Added str:quote() to put quotes around a string
+
+
+::: PROVIDER-LOCAL
+
+*** Added support for environment variables
+
+*** Use the argument array of the specification to avoid tokenization
+    based on spaces. This allows passing of arguments that contain spaces
+    to the sub-process
+
+(10/04/2006)
+
+::: KARAJAN
+
+*** Added java:systemProperty which returns the value of a
+    Java system property.
+
+(08/29/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Merged with abstraction-examples
+
+(08/20/2006)
+
+::: ABSTRACTION
+
+Version 2.0
+-----------
+- Renamed the module from "core" to "abstraction"
+
+Version 1.3
+-----------
+- Implemented "live" task graphs
+- Introduced the core-scheduling framework API and implementation
+- Improved interface and implementation for file access APIs
+- Changed the package hierarchy to clean the naming schemes
+- Fixed some critical bugs
+
+Version 1.2
+-----------
+- Improved interface and implementaion for the task graph handlers
+- Implementation of the WebDAV protocol for FileResource interface
+- Task model provisioning for File access operations
+
+Version 1.1
+-----------
+- Ability to translate between xml documents and core-objects
+- Implementation of the FileResource interface with FTP and GridFTP protocols
+
+(08/02/2006)
+
+::: KARAJAN
+
+*** Fail if extra arguments are specified
+
+*** Added some preliminary stat capability to the service
+
+*** Also added a submit command to the service (to be used
+    locally).
+
+*** Added -nosec and -local arguments to the service.
+
+*** RestartOnError can take a list of regexp as argument
+    (this is somewhat reduntant, since the same goal can
+    be achieved by the regexp itself, but it may provide
+    for somewhat cleaner code)
+
+*** Some cleanups.
+
+(07/27/2006)
+
+::: KARAJAN
+
+*** Added task:transferParams() which looks up in etc/bdp.conf (the
+    same file as the one used by tgcp) to figure the GridFTP TCP
+    buffer size
+
+*** Added tcpBufferSize argument to task:transfer()
+
+*** task:file:list() will list the files in the default directory if
+    no argument is specified
+
+(07/24/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Replaced the broken DeferredCommitHashSet.
+
+*** Added Status.isTerminal()
+
+-------------------------------2.1----------------------------------
+
+
+::: KARAJAN
+
+*** Reorganized and cleaned up code, in particular the bits dealing
+    with element arguments
+
+*** Added a throttling scheduler. It does not do scheduling, but it
+    does throttling.
+
+*** Added fault handlers to the scheduler
+
+*** Added SSH throttling and restarting
+
+*** Reorganized the service code a little
+
+
+::: PROVIDER-SSH
+
+*** Patched the j2ssh library to report when the server throttles connections,
+    so it can be detected by tools sitting above this layer
+
+(07/12/2006)
+
+::: KARAJAN
+
+*** Fixed task aborts
+
+*** Added an experimental assignment operator: ':='. If there are multiple
+    values on the right hand side, they need to be grouped under one element.
+
+*** Allow "compact" blocks by not having to specify a sequential explicitly.
+    Just the parentheses.
+
+(07/11/2006)
+
+::: KARAJAN
+
+*** Fixed a busy loop in the late binding scheduler
+
+(07/08/2006)
+
+::: KARAJAN
+
+*** Better stack traces. Only relevant things are now shown.
+
+(07/07/2006)
+
+::: KARAJAN
+
+*** Don't update/remove the channel list if a channel already existed
+
+*** Corrected problems with stack unwinding on errors
+
+*** Added support to store arbitrary strings in the log file
+
+(06/26/2006)
+
+::: KARAJAN
+
+*** Fixed a bug involving hosts without names
+
+*** Fixed a problem with the lock release on the log file (rlog library)
+
+*** Updated the viewer a little including some preliminary saving
+    capabilities
+
+(06/21/2006)
+
+::: KARAJAN
+
+*** Fixed a case sensitivity problem with arguments
+
+*** Made stderr a commutative channel
+
+*** Added multi-level submission throttling. It limits the number of
+    concurrent submissions that can happen at one time
+
+*** The scheduler complains now if trying to set a property that is
+    unknown
+
+*** Optimized access to channels
+
+(06/20/2006)
+
+::: KARAJAN
+
+*** Added ability to apply "task transformations" in the scheduler, after
+    a task has been bound to a service
+
+*** Added some code to allow specification of properties through their own
+    channel, instead of as a list.
+
+*** Fixed a problem with parallel iterators when a stack frame would be
+    removed when it should not have been.
+
+*** Removed cache argument in user defined elements. It was undocumented
+    and the same functionality can be acheived using cache() or cacheOn()
+
+*** Ability to add custom channels for stdout and stderr when embedding
+    from Java
+
+(05/10/2006)
+
+::: KARAJAN
+
+*** Fixed a NPE when defining user elements. It was only visible if the
+    definition was done in sys.
+
+*** Added fold(lambda, initial, ...). Similar to a feedback loop, it allows
+    certain things to accumulate state over the values on a channel.
+
+(04/25/2006)
+
+::: KARAJAN
+
+*** Kernel elements are always defined globally. Due to the shallow definition
+    lookup not having this was causing problems with the service.
+
+*** Fixed a problem with the wrong thing being sent to the service
+
+*** LinkedStack throws EmptyStackException instead of NPE if leave() is
+    called on an empty stack
+
+*** Function collection invocations should not print warnings on exceptions.
+    They can very well be things that are caught and handled properly.
+
+(04/20/2006)
+
+::: KARAJAN
+
+*** Updated the maybe test to also test for more than one child element
+
+(04/19/2006)
+
+::: KARAJAN
+
+*** Fixed a few problems with aborts:
+    - If something wouldn't actually abort after being aborted
+    the state manager would keep sending it abort events.
+    - If an element would be aborted and then it will fail/complete
+    it would do so with a messed up stack. The state manager now makes
+    a copy of the stack when actually aborting something.
+
+*** Fixed quoted list to not optimize things. It was broken.
+
+*** Fixed maybe() to work properly if used with more than one child element
+
+(04/18/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Added support for partial transfers
+
+*** Removed commons-logging.jar. It was not used here
+
+
+::: GRAPHEDITOR
+
+(0.47)
+    - Added dilate/contract to expand/contract nodes in a graph without changing the 
+    layout
+    - Fixed the ghost edge when switching to node editing or selection tool when editing
+    an edge
+    - Misc. cleanups
+
+
+::: KARAJAN
+
+*** Fixed wait() to abort properly
+
+*** Fixed choice() to always have error defined
+
+*** Fixed a problem with exports
+
+*** Added partial support to task:transfer
+
+*** str:chr() was incorrectly sys:chr() in sys-common
+
+*** Fixed file:write() to convert objects to strings using TypeUtil. Arguably
+    it should actually write binary data, or at least there should be some
+    element that does. The problem was that Throwable.toString() does not
+    return the stack trace.
+
+*** Fixed a problem with optional arguments not being seen properly when
+    no mandatory arguments were present
+
+*** Fixed a problem with the arguments to a user defined element were executed
+    in the definition context. They should be executed in the calling context.
+
+*** Imported files must now have their own imports, and they cannot use the
+    ones from the importing context. Fixed the settings.* files in tests/ 
+    accordingly
+
+*** Fixed info() to print proper information about user defined elements
+
+(04/12/2006)
+
+::: KARAJAN
+
+*** Put back ... for the command line arguments. The cmdline:arguments global
+    is still there
+
+*** Some misc. cleanups
+
+*** Added a few methods for tree manipulation (replaceElement, removeElement)
+
+
+::: PROVIDER-GT2
+
+*** Limited delegation is now the default
+
+(04/10/2006)
+
+::: KARAJAN
+
+*** changed sys:numberformat from (value, pattern) to (pattern, value)
+
+(04/06/2006)
+
+::: ABSTRACTION-COMMON
+
+*** Made the file resource cache timer a daemon
+
+*** Added JobSpecification.isDelegationEnabled() and
+    setDelegationEnabled(boolean)
+
+*** Fixed 3rd party transfers. The file name would be appended to
+    the host without the separating slash.
+
+
+::: KARAJAN
+
+*** Added ExecutionContext.waitFor()
+
+*** Moved ExecutionContext from karajan.stack to karajan.workflow
+
+*** Made "executable" and "arguments" arguments to task:execute non-optional.
+    They can be omitted, but the first two positional arguments map to them.
+
+*** Added a KarajanWorkflow class
+
+*** Changed kernel:export to export a set of immediately enclosed definitions
+    if the other arguments are missing.
+
+*** Added a "thirdparty" argument to task:transfer. Ideally the abstractions
+    should figure out when a third party transfer can be done.
+
+(03/31/2006)
+
+::: KARAJAN
+
+*** A general code clean-up
+
+*** Element definitions are now portable in the sense that
+    the lookup for the elements inside the body of the definition
+    is not done in the current scope but in the scope in which the
+    definition was created. This makes things closer to lexical 
+    scoping. On the other hand it still allows dynamic definitions
+    that are different for different threads. Unfortunately, lookups
+    are only performed once, since they are expensive, thus once bound
+    an element keeps the same binding.
+
+*** Added sys:each(list). It returns each element of the list (or
+    something else that can be iterated) as individual values
+
+*** Added list:get(list, index)
+
+*** task:execute() shows better error message if both executable and
+    specification are missing
+
+*** Cleaned up the event handling in most elements. Low level things are
+    not as visible. Instead of elements intercepting events, they now
+    override methods like 'childCompleted'
+
+*** Most heavily used collections now use adaptive sizing. For example
+    the map with the properties for an element, instead of being initialized
+    with the default size of 17 (or whatever it is), is now initialized with
+    a size that reflects the average of the sizes of all property maps (for
+    elements), which is closer to 2 or 3 (actually slightly higher than the
+    average, and also corrected for the map load factor).
+
+*** Removed some obsolete classes
+
+*** Command line arguments are not available as ... in the main program. They
+    are now instead accessible through the "cmdline:arguments" global (reminds
+    me; those should be constants).
+
+*** Changed the transliterator (the one that converts symbols to their internal
+    forms in the parser) to not instantiate a new Character for each character 
+    that is checked. Use a MutableCharacter instead.
+
+*** No socket timeouts on persistent TCP channels
+
+*** Some restructuring of the marshaling logic (elements are marshaled
+    differently depending on whether they are part of source code or
+    a reference on the stack). A policy is used now instead of a condition
+    in the marshaler.
+
+*** The state manager was initializing a timer even if checkpoints were
+    disabled. Not any more.
+
+*** Added channel:fork(count), and channel:close(channel). They (along with
+    other things) allow Data Flow style programming.
+
+*** Added sys:stats(). It returns information about memory usage, thread count,
+    and number of CPUs. Especially useful to get statistics from services.
+
+*** Added Condor DAGMan style restart logs (rlog library)
+
+*** Added sys:self(). It allows recursive calls in lambdas without the
+    necessity to bind them to names. For completeness and because it's 
+    just a few lines of code.
+
+*** Added sys:exclusive(): lexical mutual exclusion.
+
+*** In the service, if a comm channel has no contact information
+    (on how to re-establish the connection), it should not attempt
+    to do so (a sure way to get a NPE).
+
+*** Updated the HTML library to not export internally used elements
+
+*** Updated CHANGES.txt ;)
+
+(03/16/2006)
+
+::: KARAJAN
+
+*** Added missing ProgressMonitoringEventType.java
+
+(03/15/2006)
+
+::: KARAJAN
+
+*** task:transfer now accepts srcprovider and destprovider if two
+    different providers are needed
+
+*** made the transfer poll timer static (one per JVM instance) and
+    re-enabled transfer progress events (if monitoring is enabled)
+
+(01/28/2006)
+
+::: PROVIDER-GT2
+
+*** Updated file resource exceptions
+
+-------------------------------2.3----------------------------------
+
+
+::: PROVIDER-LOCAL
+
+*** Updated exceptions in file resource
+
+-----------------------------2.1----------------------------------
+
+(01/11/2006)
+
+::: PROVIDER-SSH
+
+*** The InteractiveSSHSecurity context now accepts optional "username"
+    and "privatekey" attributes, which will be pre-filled in the dialog(s)
+
+*** Pressing "Cancel" will return (username: "", password: ""). It prevents
+    the dialog from re-appearing after "Cancel" is pressed.
+
+*** Changed the credentials dialog to if the environment is headless (it
+    seems to indicate the absence of GUI capability). In that case, use 
+    a console authentication dialog. The "nogui" attribute (Boolean or String)
+    can also be used, if set to Boolean.TRUE or "True" to force the console
+    dialog.
+
+-------------------------------2.1----------------------------------
+
+(01/04/2006)
+
+::: PROVIDER-SSH
+
+*** Comitted fix for:
+    http://bugzilla.globus.org/bugzilla/show_bug.cgi?id=3784
+
+*** Re-formatted this file
+
+(01/03/2006)
+
+::: KARAJAN
+
+*** If a function returns an array of primitives (say, char[]) return
+    that as a single value instead of multiple
+
+*** Added missing handling for -help in the loader
+
+*** Added conversion from String to char[] in java invocations, thus
+    fixing problems with passwordAuthentication and
+    publicKeyAuthentication.
+
+*** Updated gt4.xml
+
+(12/23/2005)
+
+::: KARAJAN
+
+*** Fixed a synchronization bug in the core event handling. It could
+    cause lock-ups on SMP machines
+
+*** Fixed the service to not send replies from the same threads that
+    processes incoming requests. It was causing a "distributed deadlock"
+    in which both server and client would block trying to flush the TCP
+    output buffer, while not being able to process any requests.
+
+*** Added a new stack (LinkedStack) which uses a linked list of frames
+    but links to an existing stack for shared frames. It's more like a
+    tree of frames, but with each 'stack' object seeing a different
+    path to the root.
+
+*** Rewrote the channel buffering/ordering logic to use less memory and
+    be more efficient.
+
+*** Rewrote the way "trust" is considered when the service is running in
+    shared mode. Local libraries are considered "trusted" code, therefore
+    they can use restricted things.
+
+*** Added missing -monitor command line flag. It pops a window that graphs
+    various things over time (memory, threads, etc.)
+
+*** Compress source of remote workflows when sending over to the service.
+
+*** Added math:exp (e^x) and math:random()
+
+*** Better error messages (some "smart" exception chain message extraction)
+
+(11/23/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Rewrote part of the generic transfer handler. It now covers a few more cases
+    such as ssh to gridftp and back transfers. It also avoids temporary files
+    when not needed
+
+*** Added Task.waitFor(); it blocks until the task completes/failes/is canceled
+
+
+::: KARAJAN
+
+*** Fixed a concurrency bug with return value ordering in parallel
+    elements. It looks like appendAll() was not properly implemented
+    in the ordered vargs.
+
+*** Fixed task:transfer to not require a provider. In this case it will
+    use the first service of a host. It is still required if the host 
+    is a string contact. Also fixed it to properly use/set security 
+    contexts on used services
+
+*** Some attempts at fixing the debugger
+
+*** Always have ... defined in project()
+
+
+::: PROVIDER-GT2
+
+*** Fixed a bug regarding the current dir being GridFile.UNKNOWN instead of
+    GridFile.DIRECTORY. Thanks to David Del Vecchio
+
+*** Added a gridftp specific security context, which allows controlling
+    dcau and protection parameters.
+
+-------------------------------2.2----------------------------------
+
+(11/22/2005)
+
+::: KARAJAN
+
+*** Use the argument parser in util.
+
+*** Added info(), which can be used to get information about defined
+    elements and their arguments
+
+*** Added the -execute option to the loader. It can be used to pass a
+    script as a string
+
+*** Fixed an issue with the thread manager counting outside threads,
+    which caused problems if Karajan was started from Tomcat.
+
+*** Command line arguments are passed in '...'
+
+(11/09/2005)
+
+::: KARAJAN
+
+*** Import/include now has a "export" argument which tells it to
+    transparently export all definitions that it gets.
+
+*** The meaning of "." in the library search path for import/include
+    was changed to mean "the current directory of the currently executing
+    file". That means that including "java.xml" from "task.xml" the latter 
+    of which is in the class path, will not include the "java.xml" from the
+    current directory, but rather the one from the class path.
+
+*** Augmented channels with commutativity. When returning values
+    on a commutative channel, the order does not need to be maintained.
+
+(11/08/2005)
+
+::: KARAJAN
+
+*** Added a catch element which can be used with choice to filter
+    specific errors
+
+*** Added guard(), something similar to try/finally. try blockA finally blockB (Java)
+    would "translate" to guard(blockA, blockB)
+
+*** Aborts are now handled like failures. This allows clean-up code to be used even
+    if aborts occur.
+
+(11/02/2005)
+
+::: KARAJAN
+
+*** Fixed various problems with onError
+
+(10/31/2005)
+
+::: KARAJAN
+
+*** Fixed file operation tasks not having the proper number of required
+    services.
+
+(10/29/2005)
+
+::: KARAJAN
+
+*** Updated tests since the hyphen is not a valid identifier character
+    any more. 
+
+*** Added the maybe element, which acts as a noop if an error occurs
+    while executing its arguments.
+
+(10/17/2005)
+
+::: KARAJAN
+
+*** Added operators to the native syntax. The unfortunate side-effect
+    to this is that hyphens cannot any more be used in identifiers.
+    I suppose Karajan is stuck now with either Java naming conventions,
+    or the C ones. Since the identifier syntax is shared between
+    the native and XML versions, this applies to the XML syntax
+    as well.
+
+*** Removed the old service code. It was insecure, slow, and had little
+    features.
+
+*** Added an EXPERIMENTAL service, which can be used to submit remote scripts.
+    It can be configured using regexps on host names to use persistent 
+    connections, polling, callbacks, or a combination of these.
+
+*** Added a restricted mode, which can be used to securely multiplex
+    between multiple users. This is only used when the service is
+    started in shared mode (a feature still in development). The
+    unfortunate part is that access to certain things (such as 
+    the Java library) is forbidden.
+
+*** Changed they way libraries define elements. A library will now
+    export definitions, using the export element, which simply returns
+    a definition object on the default channel. The import element 
+    (an alias to 'include') will bind all arguments on the default
+    channel as definitions
+
+*** Added a new core event system. It offers relatively the same
+    performance as the old one, but the implementation is more
+    'correct' (proper synchronization). It uses the concurrent
+    libraries from Java 1.5 (a backport is provided, so it will
+    also work with Java 1.4)
+
+*** Added registers to the stack for storing frequently used data,
+    thus removing the need for a hash table lookup. Performance measurements
+    however show that this yields little overall improvement.
+
+*** Split caching into two elements: cache and cacheOn. The former will
+    cache lexically, while the latter will cache on a given reference.
+
+*** Better distinction between static state and run-time state. It used
+    to be that most statically, globally shared things would go into the
+    the root node, which required the presence of the entire tree in 
+    order to execute anything. Now, it has moved into an 'execution context', 
+    which is accessible through the stack.
+
+*** Added an EXPERIMENTAL option to the launcher to save the cache to the
+    disk, and automatically re-load it when the same file is executed again.
+
+*** Other small bug-fixes and enhancements
+
+(09/30/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Removed the old sandboxing strategy. The new one allows for
+    concurrent requests. The context class loader is changed before a call
+    then restored after a call to a sandboxed class.
+
+*** Updated the caching file handler to always release resources
+    after being done.
+
+*** Added the trap logic to the factory in order to detect possibly
+    improper class path settings.
+
+(09/08/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Updated the castor jar to version 0.9.6
+
+(08/27/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Improved the Javadoc comments of the abstractions interfaces
+
+(08/23/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Fixed Bug:
+    http://www.cogkit.org/bugzilla/show_bug.cgi?id=32 
+
+(08/11/2005)
+
+::: PROVIDER-GT2
+
+*** Added support for MPICH-G2 job submissions and mutli-job
+    rsl in 
+    org.globus.cog.abstraction.impl.execution.gt2.JobSubmissionTaskHandler.java
+
+(08/06/2005)
+
+::: KARAJAN
+
+*** Added uParallel and uParallelFor (unbuffered versions) - returns are
+    out of order
+
+*** Fixed isDefined to take globals into consideration
+
+*** Fixed isDefined case-sensitivity
+
+*** Added 'macros'. Basically an element with the ability to control the
+    evaluation of its arguments. The 'macro' simply receives its arguments
+    as a list of lambdas. It is not technically a macro, since everything
+    happens at run-time.
+
+*** Added a define element. It binds a lambda to a name. I'm thinking that
+    in the future the current way of defining elements be removed:
+    instead of element(ident, args, body) it should be define(ident, element(args, body)).
+    It allows the separation of the binding process from the particular definition, since
+    there is more than one type of element definition. The associated code
+    should be simpler, thus possibly less buggy. As a (nice) side effect, it
+    allows more flexible manipulation of lambdas.
+
+(07/28/2005)
+
+::: KARAJAN
+
+*** Changed parallel and parallelFor to have deterministic order
+    on the return values. This pretty much makes f(sequential(...)) 
+    equivalent to f(parallel(...)) if ... are pure. The unbuffered
+    versions are still there with a 'U' prefix, but they are not mapped
+    in sys.
+
+*** Updated the parser with better error messages in certain cases.
+
+*** Fixed problem with user defined elements that didn't have lowercase
+    arguments in the definition.
+
+*** Added a force argument to dir:remove.
+
+(06/28/2005)
+
+::: KARAJAN
+
+*** Schedulers are now configurable through the properties file
+
+*** Batch scheduler projects can now be attached to a service instead
+    of being specified with every job submission
+
+*** Added an experimental adaptive scheduler
+
+(06/24/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Updated the thirdparty file transfer logic to get proper
+    status notification on transfer COMPLETE in 
+    org.globus.cog.abstraction.impl.fileTransfer.DelegatedFileTransferHandler.java
+
+(06/14/2005)
+
+::: PROVIDER-GT2
+
+*** Fixed the GridFTP provider to do recursive deleletes with
+    GridFTP v2.0 server.
+    http://www.cogkit.org/bugzilla/show_bug.cgi?id=152
+
+-------------------------------2.1----------------------------------
+
+(06/10/2005)
+
+::: PROVIDER-GT2
+
+*** Split into new and old gridftp providers. The new one should work with
+    post gt3.2 servers. The old one does not work with servers from gt4.
+
+*** Re-implemented isDirectory in the new gridftp file resource. The old one
+    was doing a cwd to check if a file was a directory. The new one does a
+    mlst(), and checks the returned file type. It's twice as fast.
+
+(06/08/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Added support for JobManager abstractions in
+    org.globus.cog.abstraction.interfaces.ExecutionService.java and
+    org.globus.cog.abstraction.impl.common.task.ExecutionServiceImpl.java 
+
+
+::: PROVIDER-GT2
+
+*** Added support for FORK and PBS JobManagers in
+    org.globus.cog.abstraction.impl.execution.gt2.JobSubmissionTaskHandler.java
+
+(05/24/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Added support for environment variables in
+    org.globus.cog.abstraction.interfaces.JobSpecification.java and 
+    org.globus.cog.abstraction.impl.common.task.JobSpecificationImpl.java 
+
+
+::: PROVIDER-GT2
+
+*** Added support for environment variables in
+    org.globus.cog.abstraction.impl.execution.gt2.JobSubmissionTaskHandler.java
+
+(05/14/2005)
+
+::: KARAJAN
+
+*** Added a 'match' argument to restartOnError. Also added check in
+    ignoreErrors to see if the match argument was evaluated properly.
+
+(05/13/2005)
+
+::: KARAJAN
+
+*** Fixed scheduler to not fail the task when resources are not
+    available (Bug #3346)
+
+*** Added tests for execution both scheduled and unscheduled
+
+(05/11/2005)
+
+::: PROVIDER-SSH
+
+*** Committed changes for bug:
+    http://www.cogkit.org/bugzilla/show_bug.cgi?id=70
+
+(05/10/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Fixed the concurrent modification of the available Vector in
+    org.globus.cog.abstraction.impl.common.taskgraph.TaskGraphHandlerImpl.java
+
+
+::: KARAJAN
+
+*** Fixed case sensitive set in XML. Changed expression parser
+    to use IDENTIFIER() from the translator. Updated echo() to
+    output to streams. Updated from print() to echo() in HTML 
+    library.
+
+*** Providers are now case-insensitive.
+
+*** Whenever the 'local' provider is used, the 'host' argument
+    is not necessary for task:execute.
+
+(05/08/2005)
+
+::: KARAJAN
+
+*** The "If" construct works now without a condition node. The
+    condition is now implied to be in the first element after the if.
+
+*** Moved indispensable elements to the kernel: namespace.
+
+*** Moved the java elements out of sys and into java.
+
+*** Added aliases to function collection classes, such the arguments
+    and implementing method are described only once.
+
+*** The arguments for the scheduler have proper names now instead of
+    the figure-out-by type method.
+
+*** Added argument checking to java:execute
+
+*** Moved the stream argument from print() to echo(), so that print
+    stays clean. An elemental ;) way should though be implemented for
+    writing to streams (where there is no open/close).
+
+(05/04/2005)
+
+::: KARAJAN
+
+*** Added 'redirect' argument to task:execute. It will print the task
+    output on the screen
+
+(05/03/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Committed fixes for http://www.cogkit.org/bugzilla/show_bug.cgi?id=90
+
+(05/02/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Made the loadProviderProperties method in AbstractionProperties
+    synchronized, so multiple parallel requests to it will work as expected.
+
+
+::: KARAJAN
+
+*** Fixed future iterator synchronization.
+
+*** Added a count for dynamically created event busses to -showstats
+
+*** Various cleanups.
+
+------------------ v 0.31 ------------------
+
+(04/30/2005)
+
+::: GRAPHEDITOR
+
+ - Changed the launcher name to cog-graph-editor
+
+
+::: KARAJAN
+
+*** Added new sort-of-lisp-like syntax
+
+*** Formalized argument processing
+
+*** Removed redundant for/foreach. Now it's only for
+
+*** Changed parallel for from being an argument to a new element
+
+*** Added futures for asynchronous results
+
+*** Added parallel elements (which evaluate their arguments in
+    parallel with their body)
+
+*** Added the choice element (similar to try/catch)
+
+*** Added the parallelChoice element (arbitrated race)
+
+*** Added the concept of channels (named vargs), and their supporting
+    elements
+
+*** Added a print element. It uses channels (so it has functional
+    behavior instead of the side-effect-style echo)
+
+*** Rewrote the event classes to simplify them.
+
+*** Switched to xstream (xstream.codehaus.org) for serialization
+    /deserialization to/from XML. The state serialization and the
+    source serialization are now done with the same
+    library. Underneath it uses the xpp3 parser. Seems to be pretty
+    fast.
+
+*** Rewrote the event bus. It can now create threads on the fly if one
+    bus is blocked processing another event (usually from badly
+    behaved elements), and re-locate events to the newly created bus.
+
+*** Added an experimental (and buggy) debugger.
+
+*** Improved the checkpointing. it may not work if complex,
+    unserializable objects are put on the stack).
+
+*** Began adding File Operations from the CoG Abstractions.
+
+*** Remove the forward arguments. Hard to program, hard to maintain,
+    error prone.
+
+*** Made some performance improvements (in general optimizations for
+    certain common execution patterns)
+
+*** Misc. maintenance things not worth mentioning
+
+(04/29/2005)
+
+::: PROVIDER-LOCAL
+
+*** Don't change to the user's home directory on start-up.
+    Default directory is the current directory.
+
+(04/19/2005)
+
+::: PROVIDER-LOCAL
+
+*** Renamed the module from "core-provider-local" to
+    "provider-local"
+
+-----------------------------2.0----------------------------------
+
+
+::: PROVIDER-SSH
+
+*** Renamed the module "core-provider-ssh" to "provider-ssh"
+
+-------------------------------2.0----------------------------------
+
+
+::: PROVIDER-WEBDAV
+
+*** Renamed this module from "core-provider-webdav" to
+    "provider-webdav"
+
+-------------------------------2.0----------------------------------
+
+(04/18/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Renamed the module from "core-common" to
+    "abstraction-common"
+
+-------------------------------2.0----------------------------------
+
+
+::: PROVIDER-GT2
+
+*** Renamed the module from "core-provider-gt2" to
+    "provider-gt2"
+
+-------------------------------2.0----------------------------------
+
+-------------------------------1.1----------------------------------
+
+(04/08/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Updated config file deployment to not fail when individual
+    files are missing, but rather copy what is available. Such behaviour
+    is not intended to make it in to a release, but it's better for testing
+
+(04/02/2005)
+
+::: GRAPHEDITOR
+
+(0.46)
+
+  - Interactive in the swing node wrapper is enabled even for
+  non-expanded nodes. In that case, events are forwarded to the swing
+  object that is wrapped.
+
+== 2005 ====================================================================
+
+(03/29/2005)
+
+::: PROVIDER-GT2
+
+*** If no IP can be figured out from CoGProperties, throw an
+    exception 
+
+(03/24/2005)
+
+::: ABSTRACTION-COMMON
+
+*** Streamlined the interface definition for
+    FileOperationSpecification, FileResource, and 
+    GridFile    
+
+-------------------------------1.0----------------------------------
+
+
+::: PROVIDER-GT2
+
+*** Updated the implementation of
+    org.globus.cog.core.impl.file.ftp.FileResourceImpl.java 
+     and 
+    org.globus.cog.core.impl.file.gridftp.FileResourceImpl.java 
+    to make them compatible with the changes in their 
+    interface
+
+
+::: PROVIDER-LOCAL
+
+*** Updated the implementation of
+    org.globus.cog.core.impl.file.local.FileResourceImpl.java
+    to make it compatible with the changes in its interface
+
+-----------------------------1.2----------------------------------
+
+
+::: PROVIDER-WEBDAV
+
+*** Updated the implementation of
+    org.globus.cog.core.impl.file.webdav.FileResourceImpl.java
+    to make it compatible with the changes in its interface 
+
+(03/17/2005)
+
+::: PROVIDER-GT2
+
+*** Updated the FTPSecurityCredentialImpl to show a dialog box
+    prompting the user to enter credentials (if null
+    credentials are specified)   
+
+-------------------------------1.0----------------------------------
+
+
+::: PROVIDER-SSH
+
+*** Updated the SSHSecurityCredentialImpl to show a dialog box
+    prompting the user to enter credentials (if null credentials are
+    specified)   
+
+-------------------------------1.0----------------------------------
+
+
+::: PROVIDER-WEBDAV
+
+*** Updated the WebDAVSecurityCredentialImpl to show a dialog
+    box prompting the user to enter credentials (if null
+    credentials are specified)   
+
+-------------------------------1.0----------------------------------
+
+(11/10/2004)
+
+::: GRAPHEDITOR
+
+  - Fixed HTML edge renderer bug (#2211)
+
+(11/04/2004)
+
+::: GRAPHEDITOR
+
+  - Fixed problem with menu bar not being validated after switching
+    views (bug# 2189)
+
+  - Use idle status icon when idle
+
+  - Fixed a bug where columns in the list view would not get updated
+
+(10/22/2004)
+
+::: GRAPHEDITOR
+
+  - Do not rotate text shorter than 2 characters on a text edge. It
+  becomes hard to read
+
+(10/18/2004)
+
+::: GRAPHEDITOR
+
+  - Changes to make edge drawing easier (edges have now their own
+  coordinate space in which coordinates can also be negative)
+
+  - Added a layout engine interface that can ignore certain edges when
+  doing the layout
+
+(08/26/2004)
+
+::: GRAPHEDITOR
+
+  - Added code to allow editing (manual layouting) of expanded nodes
+  (relatively speaking because the changes are not saved), but it's
+  cool thing nonetheless
+
+  - Also a node can now be expanded/collapsed by double-clicking on
+  it.  
+
+(07/16/2004)
+
+::: GRAPHEDITOR
+
+  - Fixed a bug that would crash FlowLayout if the graph was made of
+  just one node 05/15/2004 v 0.45 - Added save() in the RootContainer
+  interface - Removed an annoying, useless message in the flow
+  layouts.  04/08/2004 v 0.44 - Radial layouts go either inwards or
+  outwards (there is an automatic detection for this) - In overview,
+  paint edges first and then nodes.
+
+(04/07/2004)
+
+::: GRAPHEDITOR
+
+v 0.43
+  - Fixed a problem when loading small graphs
+  - Fallback to 'String' if no type specified for property
+  - Fixed a bug with the coordinate calculation in the FlowLayout
+  - Added RadialFlowLayout
+  - Changed "LevelLayout" to "HierarchicalLayout"
+
+(03/21/2004)
+
+::: GRAPHEDITOR
+
+v 0.42
+
+  - Added Dot (graphviz) and SVG exports (targets)
+  - Added an export Dialog
+  - Added class properties (properties which do not change for
+    different instances). This saves a lot of memory
+  - Updated the flow layout. It now uses graph reduction techniques to
+    lay the nodes out according to common patterns in flow graphs
+  - GUI components for nodes and edges are only added if they are
+    visible. For some (wrong) reason I had the impression that Swing
+    calculates really fast what's visible and not.
+
+  - When there are icons and/or checkboxes in menus, align the text
+
+  - Speed improvments. It's a better deal to get a property value and
+  check if it's null then calling hasProperty() and then
+  getProperty().  One hash/list access as opposed to two. Same for
+  hashtable keys. This may not seem much, but with 300000 objects and
+  2-3 properties checked per object, everything counts.
+
+  - The componen actions have moved to the renderers. This and the
+  class properties brought the memory consumption down a lot.
+
+    - An editor to choose the columns in list view
+    - Incremental drawing for the ovrview with large graphs
+    - Changed the size of the properties window to fit the list
+    - Implemented Gregor's suggestion with sticky tools when
+    editing graphs. 
+    - Deleting of individual nodes/edges.
+    - Added some icons to the menus
+    - Moved the views selection to the View menu
+    - Layouts for the graph view have their own submenu now
+    - Added a memory metter (Help->Debug->Show Memory Statistics). 
+    - Added the ability to map images before they are loaded. This can
+    be used to seamlessly change icon themes without modifying code. 
+    This is actually in the util module
+    - There can be multiple root containers for the same hierarchy. 
+    Global proeprties are stored in the root node rather than the
+    root container
+    - Added ERROR, and WARN to the status manage. These can be used 
+    by renderers to pop up messages on the screen (or log these to the
+    console)
+    - Use a busy icon when doing some processing. I remember having this
+    before...
+    - Show the progress on the graph loading
+    - Show progress on graph layouting (currently only the flow layout)
+    - Pop the properties window near the component
+    - Update the size of the node when the name changes
+    - I discovered that SAX does not internalize strings. Not only that
+    you end up with different String objects for the same string, but
+    those also have associated char arrays with extra garbage at the end
+    that take up memory. All strings that come from SAX are now intern()ed.
+    - A few other under-the-hood changes I forgot about
+
+(02/18/2004)
+
+::: GRAPHEDITOR
+
+v 0.41
+    - Multiple targets (HTML, PS, Remote, Swing - default)
+    - Refactored classes to split core functionality from
+    target specific functionality.
+    - Canvases have renderers now too
+    - The views are now controlled by the canvas renderers
+    - Changed the way menus and toolbar buttons are generated
+    in canvas renderers
+    - The Graph view controls part of the view menu and part
+    of the toolbar now
+    - Added a few more table cell renderers/editors (for basic 
+    data types and color)
+    - Added a tree view
+    - Changed the serialization/deserialization to support
+    more human readable things (Point, Dimension, Color)
+
+(01/16/2004)
+
+::: GRAPHEDITOR
+
+v 0.40
+    - Added basic editing capability
+    - Added property filtering for the property viewer (not on the
+    interface though)
+
+== 2003 ====================================================================
+
+(04/25/2003)
+
+::: GRAPHEDITOR
+
+    - Anti-aliasing for component wrappers. It will make graph views anti-aliased
+    - An event dispatcher that sends events to nodes while unblocking the swing thread
+    so that it can continue doing its things (like repainting)
+    - A busy notification system
+    - Saving of window position/sizes
+    - the "icon" property can be used for ant tasks to specify a custom icon
+    - Improved the layout engine to distribute edges equally around the node (sort of)
+    - added a few command line options to the Ant visualizer (allowing loading and execution of Ant
+    targets from the command line)
+    - ather minor things ;)    
+
+(04/18/2003)
+
+::: GRAPHEDITOR
+
+    - Added transformations for graphs. The transformations act between
+    the canvas and the view allowing the graph to be changed before being
+    displayed.
+    - Added ant task monitoring.
+    - Improved the serialization a bit to show java.awt.Point and java.awt.Dimension
+    in a human-readable form.
+    - Added a generic canvas/frame that can load arbitrary graphs.
+    - Added a transformation that can change the <sequential> and <parallel>
+    nested constructs into a graph.
+    - Titles for windows
+    - Some other minor things
+
+(09/12/2001)
+
+::: PROVIDER-COASTER
+
+*** Use the event loop to avoid having a worker for
+    each core.
+
+*** Automatically disable logging when many concurrent
+    workers are started
+
+(00/00/2000)
+
+::: SWIFT
+
+
+(00/00/0)
