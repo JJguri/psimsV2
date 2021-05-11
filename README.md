@@ -478,7 +478,7 @@ they will need to indicate the location of this file.
 # Only simulate points in the crop mask
 checker:
   class: SimpleChecker
-  simgfile: /data/uqjojeda/masks/masks/cropmask.nc4
+  simgfile: .../masks/masks/cropmask.nc4
 ```
 
 Data aggregation
