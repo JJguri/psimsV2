@@ -1,117 +1,201 @@
-# Developers
+Code developers
+==============
 
 - Jonathan Ojeda (QAAFI, The University of Queensland)
 - Pete deVoil (QAAFI, The University of Queensland)
 
-## Collaborators
+### Collaborators to update the code
 
 -  Isaiah Huber (Iowa State University)
 -  Chris James (School of Agriculture and Food Sciences, The University of Queensland)
--  Diego Perez
+-  Diego Perez (Data Analytics Specialist & Cyber Security Expert)
 
-# pSIMSV2 Overview
+TERRA Project Team involved in the pSIMS application
+==============
 
-The original pSIMS was developed by Elliot et al. in Python 2, we updated pSIMS to pSIMSV2 which is able to run in a Python 3 environment.
-pSIMSV2 has the ability to run APSIM using a singularity image which avoid the need to install the soft dependencies manually. 
+### The University of Queensland
+- Prof Graeme Hammer (QAAFI)
+- Prof Scott Chapman (SAFS)
+- Dr Jonathan Ojeda (QAAFI)
+- Peter deVoil (QAAFI)
+- Chris James (SAFS)
 
-The singularity images to run pSIMSV2 are hosted [here](http://qaafi-hss8hy2.instrument.net.uq.edu.au/singularity-images/) for APSIM 7.9 and 7.10.  
+### Purdue University
+- Prof Mitchell Tuinstra
+- Kai-Wei Yang (PhD student)
 
 pSIMS Overview
 ==============
-pSIMS is a suite of tools, data, and models developed to facilitate access to high-resolution climate impact modeling. This system largely automates the labor-intensive processes of creating and running data ingest and transformation pipelines and allows researchers to use high-performance computing to run simulations that extend over large spatial extents, run for many growing seasons, or evaluate many alternative management practices or other input configurations. In so doing, pSIMS dramatically reduces the time and technical skills required to investigate global change vulnerability, impacts and potential adaptations. pSIMS is designed to support integration and high-resolution application of any site-based climate impact model that can be compiled in a Unix environment (with a focus on primary production: agriculture, livestock, and forestry).
+pSIMS is a suite of tools, data, and models developed to facilitate access 
+to high-resolution climate impact modeling. This system largely automates 
+the labor-intensive processes of creating and running data ingest and transformation 
+pipelines and allows researchers to use high-performance computing to run simulations 
+that extend over large spatial extents, run for many growing seasons, or evaluate many 
+alternative management practices or other input configurations. In so doing, pSIMS 
+dramatically reduces the time and technical skills required to investigate global change 
+vulnerability, impacts and potential adaptations. pSIMS is designed to support integration 
+and high-resolution application of any site-based climate impact model that can be compiled 
+in a Unix environment (with a focus on primary production: agriculture, livestock, and forestry).
 
-For more information about pSIMS, please see the following paper:
+**For more information about pSIMS, please see the following paper:**
 
-Elliott, J., D. Kelly, J. Chryssanthacopoulos, M. Glotter, Kanika Jhunjhnuwala, N. Best, M. Wilde, and I. Foster, (2014). The Parallel System for Integrating Impact Models and Sectors (pSIMS). Environmental Modeling and Software: Special Issue on Agricultural systems modeling & software. Available online, May 22, 2014. http://dx.doi.org/10.1016/j.envsoft.2014.04.008
+Elliott, J., D. Kelly, J. Chryssanthacopoulos, M. Glotter, Kanika Jhunjhnuwala, N. Best, M. Wilde, 
+and I. Foster, (2014). The Parallel System for Integrating Impact 
+Models and Sectors (pSIMS). Environmental Modeling and Software: Special Issue on 
+Agricultural systems modeling & software. Available online, May 22, 2014.
+[link to the paper](http://dx.doi.org/10.1016/j.envsoft.2014.04.008)
 
-Software Dependencies
-=====================
-Package                  | Location                                       | Type
--------                  | --------                                       | ----
-APSIM                    | https://www.apsim.info                         | Crop model
-Boost                    | http://www.boost.org                           | Required to run APSIM
-CenW                     | http://www.kirschbaum.id.au/Welcome_Page.htm   | Generic forestry model
-DSSAT                    | http://dssat.net                               | Crop model
-Mono                     | http://www.mono-project.com                    | Required to run APSIM
-nco 4.4.3                | http://nco.sourceforge.net                     | Required for postprocessing
-netcdf4                  | https://www.unidata.ucar.edu/software/netcdf/  | Required
-netcdf4 python libraries | https://github.com/Unidata/netcdf4-python      | Required
-Oracle Java 7            | http://www.oracle.com/us/downloads/index.html  | Required
-Swift 0.95               | http://swift-lang.org                          | Required
+pSIMSV2 Overview
+==============
 
-In addition to installing these packages, there are also a number of python modules that must be installed. These are defined in pysims/requirements.txt. To install these packages in an automated way, run the command "pip install -r requirements.txt" within a Python virtual environment. For more information on Python virtual environments, please see http://docs.python-guide.org/en/latest/dev/virtualenvs.
+The original pSIMS was developed by The University of Chicago in 2014 (see paper below), 
+We updated pSIMS to pSIMSV2 which is able to run the soft in an Unix Environments with all
+dependencies installed by a Singularity container without 
+the need to install the soft dependencies manually (as in pSIMS). Also, we updated some packages were obsolete. 
 
-Compiling the Models
-====================
-DSSAT 4.6:
-----------
+The singularity images to run pSIMSV2 are hosted
+[here](http://qaafi-hss8hy2.instrument.net.uq.edu.au/singularity-images/) 
+for APSIM Classic 7.9. All examples below are an implementation of pSIMSV2 for APSIM 7.9.  
 
-1. The DSSAT source code is on github.com and the repository is private. Request access from the DSSAT group for access.
-2. git clone git@github.com:DSSAT/dssat-csm.git (or https://github.com/DSSAT/dssat-csm.git for HTTPS)
-3. cd dssat-csm
-4. git checkout tags/v4.6.0.49
-5. patch -p1 < /path_to_psims/models/pdssat/dssat46.patch
-6. make
-7. Executable will be created as DSCSM046.EXE
-8. Use the example params file pysims/params.dssat.sample as a guide to help you get started
+About the research project
+==============
 
-APSIM 7.9:
-----------
-Install mono
-1. git clone git@github.com:mono/mono.git
-2. cd mono
-3. git checkout tags/mono-4.8.1.0
-4. Configure and set installation directory: ./configure --prefix=/installation/directory
-5. make && make install
-6. Add bin directory to PATH, and lib directory to LD_LIBRARY_PATH
+Regional scale estimations of sorghum biomass are crucial to identify optimum 
+genotype × environment × management (G×E×M) combinations to ensure potential 
+biomass production for bioenergy. This work was part of the TERRA project.
+Using pSIMSV2 we explored the following questions: which factors (G, E and M) 
+are dominant in explaining sorghum biomass variability? and how do the drivers 
+of sorghum biomass variability change with genotype and irrigation strategy at regional 
+scale in the US?
 
-Install mono-basic
-1. git clone git@github.com:mono/mono-basic.git
-2. cd mono-basic
-3. Configure and set installation directory: ./configure --prefix=/installation/directory
-4. make && make install
-5. Add bin directory to PATH, and lib directory to LD_LIBRARY_PATH
+Using the APSIM gridded platform (pAPSIM) within pSIMSV2, four genotypes [grain (GS), sudangrass 
+(SS), photosensitive, (PS) and photo-insensitive (PI)] were simulated across the 
+potential areas for energy sorghum in the US under rainfed and irrigated conditions 
+over 30 years. We combined (i) correlation and environmental clustering analysis, (ii) 
+variance decomposition and (iii) mapping to visualise the spatial variance of sorghum 
+biomass. Simulated biomass was assessed by environments clustered using the sum of 
+intercepted solar radiation (ir), mean of temperature stress factor (tp) and water 
+stress factor (sw). 
 
-Install Apsim
-1. Checkout the source: svn co http://apsrunet.apsim.info/svn/apsim/tags/Apsim79
-2. cd Apsim79
-3. patch -p0 < /path_to_psims/models/papsim/papsim79.patch
-4. cd model/Build
-5. mcs VersionStamper.cs
-6. mono VersionStamper.exe Directory=$PWD
-7. ./MakeAll.sh
-8. Executable will be created as Model/ApsimModel.exe
-9. Refer to example params file pysims/params.apsim.sample
+Software dependencies installed by the singularity container 
+==============
 
-Single Tile Simulation
-=======================
-Simulating a single tile is useful for testing purposes. It allows you to verify that your parameters are set correctly and to verify the simulation results looks reasonable. Create a new directory and change the The command for running a single point simulation is:
+_Note: this packages are in the requirements.txt file at psims/pysims/_
 
-Usage: `pysims.py --campaign <campaign_dir> --param <param_file> --tlatidx <tile_latitude_index> --tlonidx <tile_longitude_index> [ --latidx <point_latitude_index> --lonidx <point_longitude_index> ]`
+* python==2.7
+* numpy==1.15
+* airspeed==0.5.4.dev20150515
+* cachetools==0.8.0
+* calmap==0.0.6
+* cdo==1.3.0
+* certifi==0.0.8
+* chardet==1.0.1
+* click==6.6
+* click-plugins==1.0.3
+* cligj==0.4.0
+* colorama==0.3.6
+* cycler==0.10.0
+* Fiona==1.6.3.post1
+* geojson==1.3.2
+* matplotlib==1.5.1
+* nco==0.0.2
+* netCDF4==1.2.2
+* numpy==1.10.4
+* pandas==0.17.1
+* pyparsing==2.1.1
+* python-dateutil==2.4.2
+* pytz==2015.7
+* PyYAML==3.11
+* requests==2.9.1
+* Rtree==0.8.2
+* ruamel.base==1.0.0
+* ruamel.ordereddict==0.4.9
+* ruamel.yaml==0.11.1
+* scipy==0.17.0
+* Shapely==1.5.15
+* six==1.10.0
+* wget==3.2
+* xarray==0.7.1
+* XlsxWriter==0.8.4
 
-If a point latidx and lonidx is specified, only a single point will be simulated rather than all points in the tile.
+Steps to run pSIMS in a Unix environment
+==============
 
-Multi-Tile Simulation
-======================
-In most cases you'll want to simulate a group of tiles. Since this can be computationally expensive, this type of simulation will typically be done on a cluster or supercomputer. To accomplish this, pSIMS uses the Swift parallel scripting language. The "psims" script is a shell script used to start the simulations.
+_Before to run pSIMSV2 you should check:_
 
-Usage: `./psims -s <sitename> -p <paramfile> -c <campaign> -t <tile_list> [ -split n ]`
+* If you are running pSIMSV2 remotely, check all files were updated in the remote PC.
+* In params file check the number of scenarios and the exported variables.
+* Check location of psims folder.
+* Check location of sh files that runs apsim.
+* Check refdata (template.apsim and Sorghum.xml) if some scripts were changed.
+* Check campaign (exp_template.json) data aligns with scenario number in params file.
+* Be carefull with the commas when the variables are specified in the params file. Do not need 
+a comma after the last variable (e.g. rain, yield, biomass: mm, kg/ha, kg/ha) 
 
-The sitename option determines where a run will take place. Currently, valid
-options are "sandyb", "westmere", and "local". The sandyb and westmere sites are for use on the Midway cluster at the University of Chicago. The "local" site assumes a 12 core machine. This can be tweaked by editing conf/swift.properties.
+## Run in a local computer
 
-The params file defines the path to inputs, outputs, the type of model to run, and
-what post processing steps need to happen.
+_Note: Be sure you type sudo -s and put the password before to start._
 
-The campaign option defines a directory that contains input file specific to a campaign.
+#### _Run a single lat/lon combination_
+```
+/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
+```
 
-The gridlist is a set of latitude and longitude indexes that should be processed.
+#### _Run a single tile_
+```
+/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 
+```
+#### _Run several tiles together_
+```
+./psims -s local -p /psims/pysims/params.apsim.sample -c .../campaign/sorghum/ -t .../TileLists/test -r jon
+```
 
-The -split option may be used to break up the simulation in smaller chunks. For example, a split of 2 will run a single tile across four different nodes. This can be useful for very dense tiles.
+## Run in a computer via remote control through Ubuntu
 
-The parameter file
+#### _Run a single lat/lon combination_
+```
+.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
+```
+
+#### _Run a single tile_
+```
+.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
+```
+
+#### _Run several tiles together_
+```
+singularity exec -B /data:/data -B /run/shm:/run/shm .../PSIMs.Apsim79.sapp .../psims/psims -s local -p .../paramsFiles/PetePC/params.apsim.sample -c .../campaign/created_campaign/test3/ -t .../TileLists/sorghumEnergy
+```
+
+## Run on a cluster (HPC)
+
+#### _Run a single lat/lon combination_
+```
+export PYTHONNOUSERSITE=1
+.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173 
+```
+#### _Run a single tile_
+
+```
+export PYTHONNOUSERSITE=1
+.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
+```
+Arguments description
 ==================
-The parameter file is a YAML-formatted file containing all the parameters of a psims
+
+_Note: this description was done for the code implemented to run pSIMSV2 in a computer through remote control._
+
+**-s:** indicates if the run is implemented in a computer (local) or in a cluster (cluster).
+
+**-p:** indicates the parameter file location (e.g. .../paramsFiles/PetePC/params.apsim.sample)
+
+**-c:** indicates the campaign file location (e.g. .../campaign/created_campaign/test3/)
+
+**-t:** indicates the tile file location (e.g. .../TileLists/sorghumEnergy)
+
+Parameter file
+==================
+The parameter file is a YAML-formatted file containing all the parameters of a pSIMSV2
 run. It defines things like the number of simulation years, the path to climate input files,
 and which model to use. Below is a list of parameters and a description of what it does.
 
@@ -146,34 +230,262 @@ var\_units     | Units to use for each variable, in the same order that variable
 variables      | Define the variables to extract to final outputs
 weather        | Defines the directory where weather data is stored
 
-Campaign Files
+Below we provide an example of a parameter file:
+
+```
+
+model:       apsim79
+weather:     .../agmerra2degtile
+soils:       .../gsde2degtile
+refdata:     .../refdata
+out_file:    output
+executable:  ...
+outtypes:    .met,.apsim,.out,.json,.txt
+
+ref_year:    1980
+num_years:   30
+scen_years:  30
+scens: 8
+
+delta:       "30,30"
+tdelta:      "120,120"
+
+num_lats:    52
+num_lons:    72
+lat_zero:    49.75
+lon_zero:    -107.75
+irr_flag:    true
+irr_1st:     false
+
+# Variables to extract
+variables:   planting_date,biomass,rad40DAS,rad80DAS,radHarv,temp40DAS,temp80DAS,tempHarv,rain40DAS,rain80DAS,rainHarv,RadiationIn,TempIn,aMinT,aMaxT,RainIn,sw_stress_expan,PAWC,DaysAfterSowing,FloweringDAS,IrrigationIn,sw_stress_photo,N_stress_expan,N_stress_photo,WU,potential_ET,actual_ET,LeafNo,MaxLAI,ESW1av,sw0_40,sw40_80,sw80_harv,tp0_40,tp40_80,tp80_harv,ri0_40,ri40_80,ri80_harv,DOY
+var_units:   "date,kg/ha,MJ/m2,MJ/m2,MJ/m2,oC,oC,oC,mm,mm,mm,MJ/m2,oC,oC,oC,mm,(0-1),mm,days,days,mm,,,mm,mm,mm,,,,,,,,,,,,,,"
+long_names:  "planting_date,biomass,rad40DAS,rad80DAS,radHarv,temp40DAS,temp80DAS,tempHarv,rain40DAS,rain80DAS,rainHarv,RadiationIn,TempIn,aMinT,aMaxT,RainIn,sw_stress_expan,PAWC,DaysAfterSowing,FloweringDAS,IrrigationIn,sw_stress_photo,N_stress_expan,N_stress_photo,WU,potential_ET,actual_ET,LeafNo,MaxLAI,ESW1av,sw0_40,sw40_80,sw80_harv,tp0_40,tp40_80,tp80_harv,ri0_40,ri40_80,ri80_harv,DOY"
+
+# Only simulate points in the crop mask
+#checker:
+#  class: SimpleChecker
+#  simgfile: .../masks/masks/cropmask.nc4
+
+# Campaign translator
+tappcmp:
+   class:         camp2json
+   campaignfile:  Campaign.nc4
+   expfile:       exp_template.json
+   outputfile:    experiment.json
+
+# Input translator
+tappinp:
+    class:         apsim75.jsons2apsim
+    soilfile:      soil.json
+    soiltile:      1.soil.nc4
+    expfile:       experiment.json
+    templatefile:  template.apsim
+    outputfile:    Generic.apsim
+
+# Weather translator
+tappwth:
+   class:      apsim79.psims2met
+   inputfile:  1.clim.nc4
+   variables:  tasmin,tasmax,rsds,pr,wind
+   outputfile: Generic.met
+
+# Post processing translation
+postprocess:
+    class:     apsim79.out2psims
+    inputfile: Generic.out
+
+tapptilewth:
+    class:     tile_translator
+
+tapptilesoil:
+    class:     tile_translator_soil
+
+tappnooutput:
+    class: nooutput2psims
+```
+
+Experiment and Campaign Files
 ==============
-When pysims is run, the user must specify a campaign directory with the --campaign parameter. Typically this campaign directory contains two relevant files named Campaign.nc4 and exp_template.json. These files are used by the jsons2dssat and jsons2apsim translators to create experiment files for the crop model.
+When pysims is run, the user must specify a campaign directory with the --campaign parameter.
+Typically this campaign directory contains two relevant files named **Campaign.nc4** and **exp_template.json**.
+These files are used by the jsons2dssat and jsons2apsim translators to create experiment files for the crop model.
 
-The exp_template.json file contains key-value pairs for data that will be written to the experiment file. These values represent things like fertilizer amounts, irrigation settings, and planting dates. Static settings for the experiment are stored in exp_template.json. Values that vary by lat, lon, scenario, or time get stored in Campaign.nc4.
+The exp_template.json file contains key-value pairs for data that will be written to the experiment file.
+These values represent things like fertiliser rate applications, irrigation rates and timing and planting dates.
+Static settings for the experiment are stored in **exp_template.json**.
+Values that vary by lat, lon, scenario, or time get stored in **Campaign.nc4**.
 
-Here is an example of irrigation definitions in exp_template.json.
-~~
-  "dssat_simulation_control": {
-    "data": [
-        "irrigation": {
-          "ithru": "100",
-          "iroff": "GS000",
-          "imeth": "IR001",
-          "imdep": "40",
-          "ireff": "1.0",
-          "iramt": "10",
-          "ithrl": "80"
-        },...
-~~
+Below is an example of a **exp_template.json** for a sorghum experiment:
 
-But users may not want to these irrigation settings everywhere. If they have a collection of irrigation amounts (iramt) that change by location, users may create a variable in Campaign.nc4 called iramt. The most basic version of this would be a NetCDF variable in the format of float iramt(lat, lon). When pysims runs for a given point, the appropriate value would transfer from Campaign.nc4 into the experiment file. If iramt is not defined in Campaign.nc4, the static value from exp_template.json is used instead.
+```
+{
+    "crop_name": "Sorghum",
+    "start_date": "01/01/1980",
+    "end_date": "31/12/1985",
+    "log": "",  
+    "reporting_frequency": "harvesting",
+    "output_variables": [
+        {"name": "dd/mm/yyyy as Date"},
+        {"name": "planting_date"},
+        {"name": "biomass"},
+        {"name": "ExtinctionCoef"},		
+        {"name": "radInt"},
+        {"name": "PAWC"},
+        {"name": "WU"},
+        {"name": "potential_ET"},
+        {"name": "DaysAfterSowing"},
+        {"name": "IrrigationIn"},
+        {"name": "FloweringDAS"},
+        {"name": "LeafNo"},
+        {"name": "MaxLAI"},
+        {"name": "RainIn"},
+        {"name": "TempIn"},
+        {"name": "aMinT"},
+        {"name": "aMaxT"},
+        {"name": "RadiationIn"},
+        {"name": "FertiliserIn"},
+        {"name": "actual_ET"}
+        ],
+"initial_condition": {
+        "icrn": ".5",
+        "icrip": "100",
+        "icnd": "0",
+        "icrp": "0",
+        "icrt": "300",
+        "icrz#": "1",
+        "icrze": "1",
+        "icrag": "500",
+        "icrdp": "30",
+        "icdat": "19800101",
+        "standing_fraction": "0",
+        "water_fraction_full": "1",
+        "soilLayer": [
+          {"icno3": ".1"  ,"icbl": "5"  ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "15" ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "30" ,"icnh4": ".1"},
+          {"icno3": ".1"  ,"icbl": "100","icnh4": ".1"},
+          {"icno3": ".1" ,"icbl": "200","icnh4": ".1"}
+         ]
+      },
+      "weather": {
+        "file": "Generic"
+      },
+      "planting": {
+        "pdate": "15-may",
+        "edate": "15-dec",
+        "cultivar": "medium",
+        "row_spacing": "0.7",
+        "depth": "30",
+        "sowing_density": "8",
+        "skiprow": "solid",
+        "ftn": "2"
+      },
+      "fertilizer": {
+        "automatic_fertilizer": "off",
+        "fert_criteria": "100",
+        "fert_critical": "90",
+        "type_auto": "NO3_N",
+        "initial_amount": "200",
+        "type": "NH4NO3",
+        "days_after_sowing": "45",
+        "subsequent_amount": "200",
+        "depth": "40"
+      },
+      "irrigation": {
+        "automatic_irrigation": "off",
+        "asw_depth": "2000",
+        "crit_fr_asw": "1",
+        "efficiency": "1",
+        "allocation_limits": "off",
+        "allocation": "10",
+        "default_no3_conc": "0.0",
+        "default_nh4_conc": "0.0",
+        "default_cl_conc": "0.0"
+      },
+      "reset": {
+        "date": "14-may",
+        "water": "yes",
+        "nitrogen": "yes",
+        "surfaceOM": "yes"
+      }
+}
+```
 
-There may be situations where users want to have multiple irrigation amounts defined in your exp_template.json. In this case having an iramt variable in Campaign.nc4 variable is ambiguous because you're not sure which irrigation amount it corresponds to. In these cases pysims uses a numbering system in the Campaign.nc4 variable names. The variable iramt_1 corresponds to the first instance of iramt in exp_template.json. iramt_2 corresponds to the second instance, and so on. This process works the same for all variables, not just limited to iramt.
+But users may not want to these settings everywhere.
+If they have planting dates (pdate) that change by location, users may create a variable 
+in **Campaign.nc4** called pdate. The most basic version of this would be a NetCDF variable in the format of 
+float pdate(lat, lon). When pysims runs for a given point, the appropriate value would transfer from
+**Campaign.nc4** into the experiment file. If pdate is not defined in Campaign.nc4, the static value from 
+**exp_template.json** is used instead (in this example on 15 May).
+This process works the same for all variables, not just limited to pdate.
 
-Aggregation
+Below is an example of a **Campaign.nc4** for a sorghum experiment. In this experiment we use variable planting dates (pdate),
+irrigation (automatic_irrigation) and genotype (cultivar). We combined 2 irrigation strategies, 4 genotypes and variable 
+planting date by tile.
+
+_Note: A complete description and Python codes to create a **Campaign.nc4**
+is provided in the pSIMSV2-Tools folder in this repo._
+
+```
+{
+  dimensions:
+    lat = 360;
+    scen = 8;
+    lon = 720;
+  variables:
+    double lat(lat=360);
+      :units = "degrees_north";
+      :_Storage = "contiguous";
+
+    float cultivar(scen=8, lat=360, lon=720);
+      :long_name = "GS,GS,SS,SS,FSPS,FSPS,FS,FS";
+      :_DeflateLevel = 5; // int
+      :units = "Mapping";
+
+    float scen(scen=8);
+
+    double lon(lon=720);
+      :units = "degrees_east";
+      :_Storage = "contiguous";
+
+    float pdate(scen=8, lat=360, lon=720);
+      :long_name = "Planting date";
+      :_DeflateLevel = 5; // int
+      :units = "Julian day";
+
+    int automatic_irrigation(scen=8);
+      :units = "Mapping";
+      :long_name = "off,on,off,on,off,on,off,on";
+
+  // global attributes:
+  :person_notes = "Jonathan Ojeda";
+  :history = "pSIMS setup for sorghum modelling in USA";
+}
+```
+
+Below we provide a visual example of the variable planting date across a region in the US included in the campaign file:
+
+![image](/img/pdate.jpg)
+
+Mask file
 ===========
-The aggregation script is responsible for taking the final output of a psims simulation and computing the average value for a variable across some geographic region. To enable aggregation, add a section named 'aggregator' to your parameters file with the following parameters:
+
+In the parameter file there is an option to enable a mask nc file to be implemented. If the users enable this option,
+they will need to indicate the location of this file.
+
+```
+# Only simulate points in the crop mask
+checker:
+  class: SimpleChecker
+  simgfile: /data/uqjojeda/masks/masks/cropmask.nc4
+```
+
+Data aggregation
+===========
+The aggregation script is responsible for taking the final output of a psims
+simulation and computing the average value for a variable across some geographic region.
+To enable aggregation, add a section named 'aggregator' to your parameters file with the following parameters:
 
 Parameter | Description
 -----     | -----------
@@ -184,49 +496,52 @@ levels    | Comma separated list of levels from the aggfile (example: gadm0, gad
 The aggfile and weightfile must match the resolution used in your simulation. To generate a new aggfile you can use the gdal_rasterize utility to convert from a gadm shapefile to a netcdf file, then use bin/create_agg_limits.py to add the required variables and dimensions.
 
 Example parameters:
-~~
+```
 aggregator:
     aggfile: /path/to/agg.nc
     weightfile: /path/to/weight.nc
     levels: gadm0
-~~
+```
 
-Obtaining Data
+Climate and soil data
 ==============
-We have made two full global datasets available to pSIMS users:
+The developers of pSIMS have made two full global gridded datasets available to pSIMS users:
 
-AgMERRA Climate Forcing Dataset for Agricultural Modeling
+* _Climate:_ AgMERRA Climate Forcing Dataset for Agricultural Modeling
+* _Soil:_ Harmonized World Soil Database
 
-Harmonized World Soil Database
+Due to the size of these datasets, they are available
+only via Globus online. If you do not already have a
+Globus account, you may create one at globus.org. The endpoint name
+is davidk#psims. Harmonized World Soil Database files are available
+in the /soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the
+/clim/ggcmi/agmerra directory.
 
-Due to the size of these datasets, they are available only via Globus online. If you do not already have a Globus account, you may create one at globus.org. The endpoint name is davidk#psims. Harmonized World Soil Database files are available in the /soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the /clim/ggcmi/agmerra directory.
+You can also create your own datasets (or use others) and pass it to this tool.
 
 Tilelists
 =========
-A tilelist file contains a list of latitudes and longitudes indexes to be processed, in the format of "latidx/lonidx". Here is an example:
 
+A tilelist file contains a list of latitudes and longitudes indexes to be processed,
+in the format of "latidx/lonidx". Here is an example:
+
+```
 0024/0044
-
 0024/0045
+```
 
 Output Files
 ============
-The output/ directory contains a directory for each latitude being processed. Within each latitude directory, a tar.gz file exists for each longitude. For example, if your gridList contained a grid 100/546, you would see an output file called runNNN/output/100/546output.tar.gz. This file is generated from within the Swift work directory. Which files get included in the file is determined by how you set "outtypes" in your parameter file.
 
-The parts/ directory contains the output NetCDF files for each grid being processed. When grid 0024/0044 is done processing, you will see a file called runNNN/parts/0024/546.psims.nc.
+The output/ directory contains a directory for each latitude being processed.
+Within each latitude directory, a tar.gz file exists for each longitude. For example, if your gridList
+contained a grid 100/546, you would see an output file called runNNN/output/100/546output.tar.gz. This
+file is generated from within the Swift work directory. Which files get included in the file is determined
+by how you set "outtypes" in your parameter file.
 
-The combined nc file is saved in the runNNN directory. Its name depends on the value of "out_file" in your params file. If you set out_file to "out.psims.apsim75.cfsr.whea", the final combined nc file would be called "out.psims.apsim75.cfsr.whea.nc4".
+The **parts/** directory contains the output NetCDF files for each grid being processed. When grid 0024/0044
+is done processing, you will see a file called runNNN/parts/0024/546.psims.nc.
 
-Rerunning and Restarting Failed Runs
-====================================
-There may be times when a psims run fails. Failures may be caused by problems with the data, the hardware, or with any of the intermediate programs involved. From within the runNNN directory, you may run any of the following scripts
-
-	$ ./resume.parts.sh       # Continue part generation from where a failed run has stopped
-	$ ./rerun.parts.sh        # Rerun all part generation tasks
-	$ ./resume.combinelon.sh  # Continue combinelon from where a failed run has stopped
-	$ ./rerun.combinelon.sh   # Rerun all combinelon tasks
-	$ ./resume.combinelat.sh  # Continue combinelat from where a failed run has stopped
-	$ ./rerun.combinelat.sh   # Rerun all combinelat tasks
-	$ ./resume.aggregate.sh   # Continue aggregation from where a failed run has stopped
-	$ ./rerun.aggregate.sh    # Rerun all aggregation tasks
-	
+The combined nc file is saved in the runNNN directory. Its name depends on the value of
+"out_file" in your params file. If you set out_file to "out.psims.apsim75.cfsr.whea", the final
+combined nc file would be called "out.psims.apsim75.cfsr.whea.nc4".
