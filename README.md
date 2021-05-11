@@ -2,7 +2,7 @@ Code developers
 ==============
 
 - Jonathan Ojeda (QAAFI, The University of Queensland)
-- Pete deVoil (QAAFI, The University of Queensland)
+- Peter deVoil (QAAFI, The University of Queensland)
 
 ### Collaborators to update the code
 
@@ -48,7 +48,7 @@ Agricultural systems modeling & software. Available online, May 22, 2014.
 pSIMSV2 Overview
 ==============
 
-The original pSIMS was developed by The University of Chicago in 2014 (see paper below), 
+The original pSIMS was developed by The University of Chicago in 2014 (see paper above), 
 We updated pSIMS to pSIMSV2 which is able to run the soft in an Unix Environments with all
 dependencies installed by a Singularity container without 
 the need to install the soft dependencies manually (as in pSIMS). Also, we updated some packages were obsolete. 
@@ -545,3 +545,16 @@ is done processing, you will see a file called runNNN/parts/0024/546.psims.nc.
 The combined nc file is saved in the runNNN directory. Its name depends on the value of
 "out_file" in your params file. If you set out_file to "out.psims.apsim75.cfsr.whea", the final
 combined nc file would be called "out.psims.apsim75.cfsr.whea.nc4".
+
+Below we provide an output example for the sorghum experiment. The figure shows the biomass yield of sorghum across
+a region in the US at 30 arc-minute resolution. This map is for a given year and genotype under rainfed conditions.
+
+![image](/img/biomass.jpg)
+
+Data visualisation
+============
+
+The analysis of this work was done in Python (see pSIMSV2-Tools folder in this repo). However, fast visualisation of the
+outputs (and campaign files) can be done using [Panoply](https://www.giss.nasa.gov/tools/panoply/).
+Panoply plots geo-referenced and other arrays from netCDF, HDF, GRIB, and other datasets.
+Panoply is a cross-platform application that runs on Macintosh, Windows, Linux and other desktop computers. 
