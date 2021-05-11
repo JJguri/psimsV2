@@ -24,7 +24,7 @@ TERRA Project Team involved in the pSIMS application
 - Prof Mitchell Tuinstra
 - Kai-Wei Yang (PhD student)
 
-pSIMS Overview
+pSIMS
 ==============
 pSIMS is a suite of tools, data, and models developed to facilitate access 
 to high-resolution climate impact modeling. This system largely automates 
@@ -39,19 +39,18 @@ in a Unix environment (with a focus on primary production: agriculture, livestoc
 
 **For more information about pSIMS, please see the following paper:**
 
-Elliott, J., D. Kelly, J. Chryssanthacopoulos, M. Glotter, Kanika Jhunjhnuwala, N. Best, M. Wilde, 
-and I. Foster, (2014). The Parallel System for Integrating Impact 
-Models and Sectors (pSIMS). Environmental Modeling and Software: Special Issue on 
-Agricultural systems modeling & software. Available online, May 22, 2014.
+Elliott, Joshua, et al. (2014) The parallel system for integrating impact models and sectors (pSIMS).
+Environmental Modelling & Software 62: 509-516.
 [link to the paper](http://dx.doi.org/10.1016/j.envsoft.2014.04.008)
 
-pSIMSV2 Overview
+pSIMSV2
 ==============
 
-The original pSIMS was developed by The University of Chicago in 2014 (see paper above), 
+The original pSIMS was developed in 2014 (see paper above), 
 We updated pSIMS to pSIMSV2 which is able to run the soft in an Unix Environments with all
-dependencies installed by a Singularity container without 
-the need to install the soft dependencies manually (as in pSIMS). Also, we updated some packages were obsolete. 
+dependencies installed by a singularity container without 
+the need to install the soft dependencies manually (as in pSIMS).
+Also, we updated some packages were obsolete.
 
 The singularity images to run pSIMSV2 are hosted
 [here](http://qaafi-hss8hy2.instrument.net.uq.edu.au/singularity-images/) 
@@ -62,7 +61,7 @@ About the research project
 
 Regional scale estimations of sorghum biomass are crucial to identify optimum 
 genotype × environment × management (G×E×M) combinations to ensure potential 
-biomass production for bioenergy. This work was part of the TERRA project.
+biomass production for bioenergy. This work was part of the [TERRA](https://www.purdue.edu/terra/) project.
 Using pSIMSV2 we explored the following questions: which factors (G, E and M) 
 are dominant in explaining sorghum biomass variability? and how do the drivers 
 of sorghum biomass variability change with genotype and irrigation strategy at regional 
@@ -71,11 +70,7 @@ scale in the US?
 Using the APSIM gridded platform (pAPSIM) within pSIMSV2, four genotypes [grain (GS), sudangrass 
 (SS), photosensitive, (PS) and photo-insensitive (PI)] were simulated across the 
 potential areas for energy sorghum in the US under rainfed and irrigated conditions 
-over 30 years. We combined (i) correlation and environmental clustering analysis, (ii) 
-variance decomposition and (iii) mapping to visualise the spatial variance of sorghum 
-biomass. Simulated biomass was assessed by environments clustered using the sum of 
-intercepted solar radiation (ir), mean of temperature stress factor (tp) and water 
-stress factor (sw). 
+over 30 years.
 
 Software dependencies installed by the singularity container 
 ==============
