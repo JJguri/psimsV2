@@ -95,7 +95,6 @@ _Note: this packages are in the requirements.txt file at psims/pysims/_
 * matplotlib==1.5.1
 * nco==0.0.2
 * netCDF4==1.2.2
-* numpy==1.10.4
 * pandas==0.17.1
 * pyparsing==2.1.1
 * python-dateutil==2.4.2
@@ -524,6 +523,13 @@ in the format of "latidx/lonidx". Here is an example:
 0024/0044
 0024/0045
 ```
+Tile number can be calculated as follows:
+
+for 0024_0044 (**latidx**=24; **lonidx**=44):
+
+* Latitude (°) -->  90 - (2 * **latidx**) = 42 °N
+* Longitude (°) --> -180 (2 * **lonidx**) = -92 °E
+
 
 Output Files
 ============

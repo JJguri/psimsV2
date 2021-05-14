@@ -1,0 +1,511 @@
+<folder version="36" creator="Apsim 7.6-r3376" name="Simulations">
+#foreach ($simulation in $experiments)
+    <simulation name="Generic">
+      <metfile name="met">
+        <filename name="filename" input="yes">${simulation.weather.file}.met</filename>
+      </metfile>
+      <clock>
+        <start_date type="date" description="Enter the start date of the simulation">$simulation.startDate</start_date>
+        <end_date type="date" description="Enter the end date of the simulation">$simulation.endDate</end_date>
+      </clock>
+      <summaryfile />
+      <area name="pad">
+#if( $simulation.micromet == "on" )
+        <micromet name="Micromet">
+          <soilalbedo type="text" description="soilalbedo">0.23</soilalbedo>
+          <a_interception type="text" description="a_interception">0</a_interception>
+          <b_interception type="text" description="b_interception">0</b_interception>
+          <c_interception type="text" description="c_interception">0</c_interception>
+          <d_interception type="text" description="d_interception">0</d_interception>
+        </micromet>
+#end
+        <surfaceom name="SurfaceOrganicMatter">
+          <PoolName type="text" description="Organic Matter pool name">AgPasture</PoolName>
+          <type type="list" listvalues="bambatsi,barley,base_type,broccoli,camaldulensis,canola,centro,chickpea,chikenmanure_base,cm,cmA,cmB,constants,cotton,cowpea,danthonia,fababean,fieldpea,fym,gbean,globulus,goatmanure,grandis,grass,horsegram,inert,lablab,lentil,lucerne,lupin,maize,manB,manure,medic,millet,mucuna,nativepasture,navybean,oats,orobanche,peanut,pigeonpea,potato,rice,sorghum,soybean,stylo,sugar,sunflower,sweetcorn,sweetsorghum,tillage,tithonia,vetch,weed,wheat" description="Organic Matter type">$simulation.initialCondition.residueType</type>
+          <mass type="text" description="Initial surface residue (kg/ha)">$simulation.initialCondition.residueWeight</mass>
+          <cnr type="text" description="C:N ratio of initial residue">$simulation.initialCondition.cnr</cnr>
+          <cpr type="text" description="C:P ratio of initial residue (optional)">
+          </cpr>
+          <standing_fraction type="text" description="Fraction of residue standing">$simulation.initialCondition.standing_fraction</standing_fraction>
+        </surfaceom>
+        <fertiliser name="Fertiliser" />
+        <irrigation name="Irrigation">
+          <automatic_irrigation type="list" listvalues="on,off" description="Automatic irrigation">$simulation.irrigation.automatic_irrigation</automatic_irrigation>
+          <asw_depth type="text" description="Depth to which ASW is calculated. (mm)">$simulation.irrigation.asw_depth</asw_depth>
+          <crit_fr_asw type="text" description="Fraction of ASW below which irrigation is applied (0-1.0)">$simulation.irrigation.crit_fr_asw</crit_fr_asw>
+          <irrigation_efficiency type="text" description="Efficiency of the irrigation. (0-1.0)">$simulation.irrigation.efficiency</irrigation_efficiency>
+          <irrigation_allocation type="list" listvalues="on,off" description="Allocation limits">$simulation.irrigation.allocation_limits</irrigation_allocation>
+          <allocation type="text" description="Allocation in mm">$simulation.irrigation.allocation</allocation>
+          <default_no3_conc type="text" description="Nitrate concentration (ppm N)">$simulation.irrigation.default_no3_conc</default_no3_conc>
+          <default_nh4_conc type="text" description="Ammonium concentration (ppm N)">$simulation.irrigation.default_nh4_conc</default_nh4_conc>
+          <default_cl_conc type="text" description="Chloride concentration (ppm Cl)">$simulation.irrigation.default_cl_conc</default_cl_conc>
+        </irrigation>
+        <AgPasture>
+          <Nspecies type="text" description="Number of species">$simulation.pasture.num_species</Nspecies>
+          <thisCropName type="text" description="Crop name shown as on the simulation tree">AgPasture</thisCropName>
+          <cropName type="text" description="Species names">$simulation.pasture.species</cropName>
+          <dmtotal type="text" description="Initial shoot dry matter (kg/ha)">$simulation.pasture.initial_shoot_dry_matter</dmtotal>
+          <dmlitter type="text" description="Initial litter dry matter (kg/ha)">$simulation.pasture.initial_litter_dry_matter</dmlitter>
+          <dmgreenmin type="text" description="Minimum green dry matter (kg/ha)">$simulation.pasture.min_green_dry_matter</dmgreenmin>
+          <rootDepth type="text" description="Root depth (mm)">$simulation.pasture.root_depth</rootDepth>
+          <rlvp type="text" description="Root distribution parameter ([0-1] relative to Root depth)">$simulation.pasture.root_distribution</rlvp>
+          <WaterUptakeSource type="text" description="Water uptake done by AgPasture (calc) or by apsim?">$simulation.pasture.water_uptake_handler</WaterUptakeSource>
+        </AgPasture>
+        <manager name="Reset">
+          <ui>
+            <category type="category" description="When should a reset be done" />
+            <reset_date type="ddmmmdate" description="Enter date of reset (dd-mmm) : ">$simulation.reset.date</reset_date>
+            <category type="category" description="Reset details" />
+            <soilmodule type="modulename" description="Name of your soil module : ">Soil</soilmodule>
+            <surfaceommodule type="modulename" description="Name of your surface organic matter module : ">SurfaceOrganicMatter</surfaceommodule>
+            <pmodule type="modulename" description="Name of your phosphorus module : ">Phosphorus</pmodule>
+            <resetWater type="yesno" description="Reset soil water?">$simulation.reset.water</resetWater>
+            <resetNitrogen type="yesno" description="Reset soil nitrogen?">$simulation.reset.nitrogen</resetNitrogen>
+            <resetSurfaceOM type="yesno" description="Reset surface organic matter?">$simulation.reset.surfaceOM</resetSurfaceOM>
+            <resetP type="yesno" description="Reset phosphorus?">no</resetP>
+          </ui>
+          <script>
+            <text>
+         if (today = date('[reset_date]')) then
+            resetWater = '[resetWater]'
+            resetNitrogen  = '[resetNitrogen]'
+            resetSurfaceOM = '[resetSurfaceOM]'
+            resetP = '[resetP]'
+            if (resetWater = 'yes') then
+                '[soilmodule] Water' reset
+            endif
+            if (resetNitrogen = 'yes') then
+                '[soilmodule] Nitrogen' reset
+            endif
+            if (resetSurfaceOM = 'yes') then
+                '[surfaceommodule]' reset
+            endif
+            if (resetP = 'yes') then
+                '[pmodule]' reset
+            endif
+            act_mods reseting
+         endif
+      </text>
+            <event>start_of_day</event>
+          </script>
+        </manager>
+#if( $simulation.pasture.template == "weight" )
+        <manager name="Rotational grazing with herbage mass between two limits">
+          <ui>
+            <category type="category" description="Regular harvest or grazing" />
+            <AgPasture type="list" listvalues="agpasture,ryegrass_clover,ryegrass_clover_paspalum,ryegrass,clover" description="Enter pasture type">$simulation.pasture.pasture_type</AgPasture>
+            <date1 type="date" description="Enter the first harvest or grazing date">$simulation.startDate</date1>
+            <upper_amount type="text" description="Enter herbage amount to start grazing (harvest)  (kg/ha)">$simulation.pasture.herbage_amount_to_start_grazing</upper_amount>
+            <amount type="text" description="Enter daily amount (kg/ha) or -1 for remove once to residee below">$simulation.pasture.daily_amount</amount>
+            <lower_amount type="text" description="Enter herbage amount to stop grazing (residue, kg/ha)">$simulation.pasture.herbage_amount_to_stop_grazing</lower_amount>
+            <category type="category" description="Material returns" />
+            <dm_frac type="text" description="Fraction of nitrogen returned as excreta">$simulation.pasture.nitrogen_returned_in_excreta</dm_frac>
+            <urine_n_frac type="text" description="Fraction of returned nitrogen in urine">$simulation.pasture.nitrogen_returned_in_urine</urine_n_frac>
+            <urine_depth type="text" description="Urine deposit depth (mm)">$simulation.pasture.urine_deposit_depth</urine_depth>
+          </ui>
+          <script>
+            <text>dm_som = 0
+   dm_removed = 0
+   n_returned =0
+   n_removed =0
+   n_som = 0
+   n_urine = 0
+   n_urine1 = 0
+   n_urine2 = 0
+
+   if ( today &gt;= date('[date1]') )  then
+          if ( ( [AgPasture].AboveGroundWt  &gt; '[upper_amount]' )  or  (  ( [AgPasture].AboveGroundWt &gt; '[lower_amount]') and (continuegrazing = 1) ) ) then
+                 removable_amt  =  [AgPasture].AboveGroundWt - [lower_amount]               
+                 if ([amount] = -1 )  or ('[amount]' &gt; removable_amt ) then
+                        daily_amt =  removable_amt 
+                        continuegrazing = 0
+                 else
+                        daily_amt = [amount]
+                        continuegrazing= 1
+                 endif      
+                 
+                 '[AgPasture]' graze type = 'SetRemoveAmount', amount = daily_amt (kg/ha)                
+                 digest = DefoliatedDigestibility                 
+                 dm_som = HarvestWt * (1-digest)                        
+                 n_removed  = HarvestN *(1.0-[dm_frac])
+                 n_returned = HarvestN * [dm_frac]
+                 n_som      = n_returned * ( 1.0 - [urine_n_frac] )
+                 n_urine    = n_returned *  [urine_n_frac]  
+                 n_urine1 = 0.6 * n_urine
+                 n_urine2 = 0.4 * n_urine
+                  'SurfaceOrganicMatter' add_surfaceom name = '[AgPasture]' , type =  grass, mass = dm_som (kg/ha), n = n_som (kg/ha)
+                 'fertiliser' apply amount =  n_urine1  (kg/ha), depth = 50  (mm), type = urea_n ()
+                 'fertiliser' apply amount =  n_urine2  (kg/ha), depth = 150 (mm), type = urea_n ()
+         endif
+    endif
+
+   </text>
+            <event>end_of_day</event>
+          </script>
+          <script>
+            <text>account = 0
+   dm_som = 0
+   dm_removed = 0
+   n_returned =0
+   n_removed =0
+   n_som = 0
+   n_urine = 0
+   continuegrazing = 1
+   daily_amt = 0</text>
+            <event>init</event>
+          </script>
+        </manager>
+#elseif ( $simulation.pasture.template == "days" )
+        <manager name="Regular harvest or grazing (with return)">
+          <ui>
+            <category type="category" description="Regular harvest or grazing" />
+            <AgPasture type="list" listvalues="agpasture,ryegrass_clover,ryegrass_clover_paspalum,ryegrass,clover" description="Enter pasture type">$simulation.pasture.pasture_type</AgPasture>
+            <date1 type="date" description="Enter the first harvest or grazing date">$simulation.startDate</date1>
+            <amount_type type="list" listvalues="SetResidueAmount,SetRemoveAmount" description="Select the amount type">$simulation.pasture.amount_type</amount_type>
+            <amount type="text" description="Enter herbage amount (kg/ha)">$simulation.pasture.herbage_amount_to_start_grazing</amount>
+            <interval type="text" description="Enter the intervals between harvest or grazing (days)">$simulation.pasture.intervals_between_harvest</interval>
+            <category type="category" description="Material returns" />
+            <dm_frac type="text" description="Fraction of nitrogen returned as excreta">$simulation.pasture.nitrogen_returned_in_excreta</dm_frac>
+            <urine_n_frac type="text" description="Fraction of returned nitrogen in urine">$simulation.pasture.nitrogen_returned_in_urine</urine_n_frac>
+            <urine_depth type="text" description="Urine deposit depth (mm)">$simulation.pasture.urine_deposit_depth</urine_depth>
+          </ui>
+          <script>
+            <text>account = account + 1
+   dm_som = 0
+   dm_removed = 0
+   n_returned =0
+   n_removed =0
+   n_som = 0
+   n_urine = 0
+   n_urine1 = 0
+   n_urine2 = 0
+   if ( (today = date('[date1]')) or
+        (today &gt;date('[date1]') and account = [interval] )) then
+                 account = 0
+                 '[AgPasture]' graze type = '[amount_type]', amount = [amount] (kg/ha)
+                 digest = DefoliatedDigestibility
+                 dm_som = HarvestWt * (1-digest)
+
+                 n_removed  = HarvestN *(1.0-[dm_frac])
+                 n_returned = HarvestN * [dm_frac]
+                 n_som      = n_returned * ( 1.0 - [urine_n_frac] )
+                 n_urine    = n_returned *  [urine_n_frac]
+                 n_urine1 = 0.6 * n_urine
+                 n_urine2 = 0.4 * n_urine
+                  'SurfaceOrganicMatter' add_surfaceom name = '[AgPasture]' , type =  grass, mass = dm_som (kg/ha), n = n_som (kg/ha)
+                 'fertiliser' apply amount =  n_urine1  (kg/ha), depth = 50  (mm), type = urea_n ()
+                 'fertiliser' apply amount =  n_urine2  (kg/ha), depth = 150 (mm), type = urea_n ()
+    endif
+
+   </text>
+            <event>end_of_day</event>
+          </script>
+          <script>
+            <text>account = 0
+   </text>
+            <event>init</event>
+          </script>
+        </manager>
+#end
+
+        <manager name="Empty manager">
+          <script>
+            <text>
+            </text>
+            <event>init</event>
+          </script>
+          <script>
+            <text>T_average = 0.5 * (MaxT + MinT)</text>
+            <event>start_of_day</event>
+          </script>
+          <script>
+            <text>
+            </text>
+            <event>end_of_day</event>
+          </script>
+        </manager>
+        <outputfile>
+          <filename output="yes">Generic.out</filename>
+          <title>agpasture</title>
+          <variables name="Variables">
+#foreach ($var in $simulation.output_variables)
+             <variable>$var.name</variable>
+#end
+          </variables>
+          <events name="Reporting Frequency">
+            <event>end_year</event>
+          </events>
+        </outputfile>
+        <Soil>
+          <RecordNumber>0</RecordNumber>
+          <Site>$simulation.soil.site</Site>
+          <Latitude>$simulation.soil.latitude</Latitude>
+          <Longitude>$simulation.soil.longitude</Longitude>
+          <DataSource>$simulation.soil.source</DataSource>
+          <Water>
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <BD> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.bulkDensity</double> #end
+
+            </BD>
+            <AirDry> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.airDry</double> #end
+
+            </AirDry>
+            <LL15> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.lowerLimit</double> #end
+
+            </LL15>
+            <DUL> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.drainedUpperLimit</double> #end
+
+            </DUL>
+            <SAT> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.saturation</double> #end
+
+            </SAT>
+            <SoilCrop name="Maize">
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <LL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.lowerLimit</double> #end
+
+            </LL>
+            <KL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.kl</double> #end
+
+            </KL>
+            <XF> #foreach ($layer in $simulation.soil.layers)
+                <double>1</double> #end
+
+            </XF>
+            </SoilCrop>
+            <SoilCrop name="millet">
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <LL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.lowerLimit</double> #end
+
+            </LL>
+            <KL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.kl</double> #end
+
+            </KL>
+            <XF> #foreach ($layer in $simulation.soil.layers)
+                <double>1</double> #end
+            
+            </XF>
+            </SoilCrop>
+            <SoilCrop name="agpasture">
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <LL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.lowerLimit</double> #end
+
+            </LL>
+            <KL> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.kl</double> #end
+
+            </KL>
+            <XF> #foreach ($layer in $simulation.soil.layers)
+                <double>1</double> #end
+
+            </XF>
+            </SoilCrop>
+	  </Water>
+          <SoilWater>
+            <SummerCona>3.5</SummerCona>
+            <SummerU>9.36</SummerU>
+            <SummerDate>1-Nov</SummerDate>
+            <WinterCona>3.5</WinterCona>
+            <WinterU>9.36</WinterU>
+            <WinterDate>1-Apr</WinterDate>
+            <DiffusConst>40</DiffusConst>
+            <DiffusSlope>16</DiffusSlope>
+            <Salb>0.13</Salb>
+            <CN2Bare>72</CN2Bare>
+            <CNRed>20</CNRed>
+            <CNCov>0.8</CNCov>
+            <Slope>NaN</Slope>
+            <DischargeWidth>NaN</DischargeWidth>
+            <CatchmentArea>NaN</CatchmentArea>
+            <MaxPond>NaN</MaxPond>
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <SWCON> #foreach ($layer in $simulation.soil.layers)
+               <double>0.3</double> #end
+
+            </SWCON>
+          </SoilWater>
+          <SoilOrganicMatter>
+            <RootCN>45</RootCN>
+            <RootWt>500</RootWt>
+            <SoilCN>13</SoilCN>
+            <EnrACoeff>7.4</EnrACoeff>
+            <EnrBCoeff>0.2</EnrBCoeff>
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <OC> #foreach ($layer in $simulation.soil.layers)
+              #if( $layer.organicCarbon == 0 ) <double>0.1</double>
+              #else <double>$layer.organicCarbon</double> #end
+              #end
+
+            </OC>
+            <FBiom> #foreach ($layer in $simulation.soil.layers)
+               <double>$layer.fbiom</double> #end
+
+            </FBiom>
+            <FInert> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.finert</double> #end
+
+            </FInert>
+            <OCUnits>Total</OCUnits>
+          </SoilOrganicMatter>
+
+          <Analysis>
+            <Thickness> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.thickness</double> #end
+
+            </Thickness>
+            <Texture>
+              <string />
+              <string />
+              <string />
+              <string />
+              <string />
+            </Texture>
+            <MunsellColour>
+              <string />
+              <string />
+              <string />
+              <string />
+              <string />
+            </MunsellColour>
+            <PH> #foreach ($layer in $simulation.soil.layers)
+              <double>$layer.ph</double> #end
+
+            </PH>
+            <PHUnits>Water</PHUnits>
+            <BoronUnits>HotWater</BoronUnits>
+          </Analysis>
+
+          <Sample name="Initial nitrogen">
+            <Date>$simulation.initialCondition.date</Date>
+            <Thickness> #foreach ($initialLayer in $simulation.initialCondition.soilLayers)
+              <double>$initialLayer.thickness</double> #end
+
+            </Thickness>
+            <NO3> #foreach ($initialLayer in $simulation.initialCondition.soilLayers)
+              <double>$initialLayer.no3</double> #end
+
+            </NO3>
+            <NH4> #foreach ($initialLayer in $simulation.initialCondition.soilLayers)
+              <double>$initialLayer.nh4</double> #end
+
+            </NH4>
+            <NO3Units>ppm</NO3Units>
+            <NH4Units>ppm</NH4Units>
+            <SWUnits>Volumetric</SWUnits>
+            <OCUnits>Total</OCUnits>
+            <PHUnits>Water</PHUnits>
+          </Sample>
+
+          <InitialWater>
+            <FractionFull>$simulation.initialCondition.water_fraction_full</FractionFull>
+            <DepthWetSoil>NaN</DepthWetSoil>
+            <PercentMethod>EvenlyDistributed</PercentMethod>
+            <RelativeTo>ll15</RelativeTo>
+          </InitialWater>
+
+        </Soil>
+        <manager2 name="SpecialReporter">
+          <ui>
+            <date type="text" description="Date for the special report">01-jan</date>
+            <date2 type="text" description="date for second one">30-dec</date2>
+          </ui>
+          <text>
+using System;
+using ModelFramework;
+using CSGeneral;
+
+public class Script 
+{      
+   [Link] Paddock MyPaddock; // Can be used to dynamically get access to simulation structure and variables
+   [Input] DateTime Today;   // Equates to the value of the current simulation date - value comes from CLOCK
+   [Param] string date;         // The value for this will come from the Properties page.
+   [Param] string date2;
+   [Input] double HarvestWt;
+   [Output] int HarvestEventCount;
+   
+   [Event] public event NullTypeDelegate SpecialReport;
+   [Event] public event NullTypeDelegate SpecialReport2;
+   
+   private double yesterdayHarvest;
+
+   
+   // The following event handler will be called once at the beginning of the simulation
+   [EventHandler] public void OnInitialised()
+   {
+      HarvestEventCount = 0;
+   }
+      
+   // The following event handler will be called each day at the beginning of the day
+   [EventHandler] public void OnPrepare()
+   {
+      if (DateUtility.DatesEqual(date, Today))
+         SpecialReport.Invoke();
+      
+      if (DateUtility.DatesEqual(date2, Today))
+      {
+         SpecialReport2.Invoke();
+         HarvestEventCount = 0;
+      }
+   }
+   [EventHandler] public void OnPost()
+   {
+      if (yesterdayHarvest != 0.0 &amp;&amp; HarvestWt == 0.0)
+         HarvestEventCount++;
+      yesterdayHarvest = HarvestWt;
+   }
+}
+       </text>
+        </manager2>
+        <tracker>
+          <variable>sum of AET on end_of_day from sowing to harvesting as actual_ET</variable>
+          <variable>sum of HarvestWt on end_of_day from SpecialReport to SpecialReport2 as SumHarvestWt</variable>
+          <variable>sum of rain on end_of_day from SpecialReport to SpecialReport2 as RainAnnual</variable>
+          <variable>average of T_average on end_of_day from SpecialReport to SpecialReport2 as MeanTempAnnual</variable>
+          <variable>sum of T_average on end_of_day from SpecialReport to SpecialReport2 as SumTempAnnual</variable>
+          <variable>average of radn on end_of_day from SpecialReport to SpecialReport2 as MeanRadiationAnnual</variable>
+          <variable>sum of radn on end_of_day from SpecialReport to SpecialReport2 as SumRadiationAnnual</variable>
+          <variable>sum of n2o_atm() on end_of_day from SpecialReport to SpecialReport2 as SumN2OemissAnnual</variable>
+          <variable>sum of leach_no3 on end_of_day from SpecialReport to SpecialReport2 as SumNleachingAnnual</variable>
+          <variable>sum of fertiliser on end_of_day from SpecialReport to SpecialReport2 as SumNappliedAnnual</variable>
+          <variable>sum of irrigation on end_of_day from SpecialReport to SpecialReport2 as SumIrrigappliedAnnual</variable>
+          <variable>sum of es on end_of_day from SpecialReport to SpecialReport2 as SumSoilEvapAnnual</variable>
+          <variable>sum of WaterUptake on end_of_day from SpecialReport to SpecialReport2 as SumPlantTranspAnnual</variable>
+          <variable>sum of NitrogenUptake on end_of_day from SpecialReport to SpecialReport2 as SumNuptakeAnnual</variable>
+          <variable>sum of runoff on end_of_day from SpecialReport to SpecialReport2 as SumRunoffAnnual</variable>
+          <variable>sum of dlt_n_min_tot() on end_of_day from SpecialReport to SpecialReport2 as SumNmineralizedAnnual</variable>
+          <variable>average of GLFwater on end_of_day from SpecialReport to SpecialReport2 as WaterStressAnnual</variable>
+          <variable>average of GLFtemp on end_of_day from SpecialReport to SpecialReport2 as TempStressAnnual</variable>
+          <variable>average of GLFn on end_of_day from SpecialReport to SpecialReport2 as NStressAnnual</variable>
+          <variable>maximum of HarvestEventCount on end_of_day from SpecialReport to SpecialReport2 as NumberHarvests</variable>
+        </tracker>
+      </area>
+    </simulation>
+    #end
+</folder>

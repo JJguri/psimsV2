@@ -1,0 +1,915 @@
+<folder version="32" name="simulations">
+  #foreach ($simulation in $experiments)
+	<simulation name="Generic">
+		<memo name="LOG">$simulation.log</memo>
+		<clock>
+			<start_date type="date" description="Enter the start date of the simulation">$simulation.startDate</start_date>
+			<end_date type="date" description="Enter the end date of the simulation">$simulation.endDate</end_date>
+		</clock>
+		<metfile name="met">
+			<filename name="filename" input="yes">${simulation.weather.file}.met</filename>
+		</metfile>
+		<summaryfile />
+		<area name="paddock">
+			<accum name="temperatures2">  
+			  <variable type="text" description="maxt">maxt[7]</variable> 
+			</accum> 
+			<accum name="temperatures3">  
+			  <variable type="text" description="mint">mint[7]</variable> 
+			</accum> 
+			<soil name="Soil">
+				<Comment type="multiedit" description="Comments">ICASA Classification: $simulation.soil.classification</Comment>
+				<ASC_Order description="Australian Soil Classification Order" />
+				<ASC_Sub-order description="Australian Soil Classification Sub-Order" />
+				<SoilType description="Soil description"/>
+				<LocalName/>
+				<Site>$simulation.soil.site</Site>
+				<NearestTown description="Nearest town"/>
+				<Region/>
+				<State />
+				<Country />
+				<NaturalVegetation description="Natural vegetation"/>
+				<ApsoilNumber description="Apsoil number" />
+				<Latitude description="Latitude (WGS84)">$simulation.soil.latitude</Latitude>
+				<Longitude>$simulation.soil.longitude</Longitude>
+				<LocationAccuracy description="Location accuracy" />
+				<DataSource type="multiedit" description="Data source">$simulation.soil.source</DataSource>
+				<Comments />
+				<Water>
+#foreach ($layer in $simulation.soil.layers)
+					<Layer>
+						<Thickness units="mm">$layer.thickness</Thickness>
+						<KS units="mm/day" />
+						<BD units="g/cc">$layer.bulkDensity</BD>
+						<AirDry units="mm/mm">$layer.airDry</AirDry>
+						<LL15 units="mm/mm">$layer.lowerLimit</LL15>
+						<DUL units="mm/mm">$layer.drainedUpperLimit</DUL>
+						<SAT units="mm/mm">$layer.saturation</SAT>
+					</Layer>
+#end
+					<SoilCrop name="$simulation.cropName">
+#foreach ($layer in $simulation.soil.layers)          
+						<Layer>
+							<Thickness units="mm">$layer.thickness</Thickness>
+							<LL units="mm/mm">$layer.lowerLimit</LL>
+							<KL units="/day">$layer.kl</KL>
+							<XF units="0-1">1</XF>
+						</Layer>
+#end
+					</SoilCrop>
+				</Water>
+				<SoilWat>
+					<SummerCona>3.5</SummerCona>
+					<SummerU>$simulation.soil.u</SummerU>
+               <SummerDate>1-Nov</SummerDate>
+					<WinterCona>3.5</WinterCona>
+					<WinterU>$simulation.soil.u</WinterU>
+               <WinterDate>1-Apr</WinterDate>
+					<DiffusConst>$simulation.soil.diffusConst</DiffusConst>
+					<DiffusSlope>$simulation.soil.diffusSlope</DiffusSlope>
+					<Salb>$simulation.soil.salb</Salb>
+					<Cn2Bare>$simulation.soil.cn2bare</Cn2Bare>
+					<CnRed>20</CnRed>
+					<CnCov>0.8</CnCov>
+					<Slope>
+					</Slope>
+					<DischargeWidth>
+					</DischargeWidth>
+					<CatchmentArea>
+					</CatchmentArea>
+					<MaxPond>
+					</MaxPond>
+#foreach ($layer in $simulation.soil.layers)             
+					<Layer>
+						<Thickness units="mm">$layer.thickness</Thickness>
+						<SWCON units="0-1">0.3</SWCON>
+						<MWCON units="0-1" />
+						<KLAT units="mm/d" />
+					</Layer>
+#end
+				</SoilWat>
+				<SoilOrganicMatter>
+					<RootCn>45</RootCn>  
+					<RootWt>500</RootWt>  
+					<SoilCn>14.5</SoilCn> 
+					<EnrACoeff>7.4</EnrACoeff>
+					<EnrBCoeff>0.2</EnrBCoeff>
+#foreach ($layer in $simulation.soil.layers)        
+					<Layer>                                            
+						<Thickness units="mm">$layer.thickness</Thickness>                                                
+						<OC units="Total %">#if( $layer.organicCarbon == 0 ) 0.1 #else $layer.organicCarbon #end</OC>
+						<FBiom units="0-1">$layer.fbiom</FBiom>
+						<FInert units="0-1">$layer.finert</FInert>
+					</Layer>
+#end
+				</SoilOrganicMatter>
+				<Analysis>
+#foreach ($layer in $simulation.soil.layers)        
+					<Layer>
+						<Thickness units="mm">$layer.thickness</Thickness>
+						<Rocks units="%" />
+						<Texture/>
+						<MunsellColour/>
+						<EC units="1:5 dS/m"/>
+						<PH units="1:5 water">$layer.ph</PH>
+						<CL units="mg/kg" />
+						<Boron units="Hot water mg/kg" />
+						<CEC units="cmol+/kg" />
+						<Ca units="cmol+/kg" />
+						<Mg units="cmol+/kg" />
+						<Na units="cmol+/kg" />
+						<K units="cmol+/kg" />
+						<ESP units="%" />
+						<Mn units="mg/kg" />
+						<Al units="cmol+/kg" />
+						<ParticleSizeSand units="%" />
+						<ParticleSizeSilt units="%" />
+						<ParticleSizeClay units="%" />
+					</Layer>
+#end
+				</Analysis>
+				<Sample name="Initial nitrogen">
+					<Date type="date" description="Sample date:">$simulation.initialCondition.date</Date>
+#foreach ($initialLayer in $simulation.initialCondition.soilLayers)        
+					<Layer>
+						<Thickness units="mm">$initialLayer.thickness</Thickness>
+						<NO3 units="ppm">$initialLayer.no3</NO3>
+						<NH4 units="ppm">$initialLayer.nh4</NH4>
+					</Layer>
+#end          
+				</Sample>
+        		      <InitialWater>
+           		      	      <FractionFull>$simulation.initialCondition.water_fraction_full</FractionFull>
+          			      <DepthWetSoil>NaN</DepthWetSoil>
+           			      <PercentMethod>EvenlyDistributed</PercentMethod>
+          			      <RelativeTo>ll15</RelativeTo>
+        		      </InitialWater>
+			</soil>
+			<surfaceom name="SurfaceOrganicMatter">
+				<PoolName type="text" description="Organic Matter pool name">OrganicMatter</PoolName>
+				<type type="list" listvalues="bambatsi,barley,base_type,broccoli,camaldulensis,canola,centro,chickpea,chikenmanure_base,cm,cmA,cmB,constants,cotton,cowpea,danthonia,fababean,fieldpea,fym,gbean,globulus,goatmanure,grandis,grass,horsegram,inert,lablab,lentil,lucerne,lupin,maize,manB,manure,medic,millet,mucuna,nativepasture,navybean,oats,orobanche,peanut,pigeonpea,potato,rice,sorghum,soybean,stylo,sugar,sunflower,sweetcorn,sweetsorghum,tillage,tithonia,vetch,weed,wheat" description="Organic Matter type">$simulation.initialCondition.residueType</type>
+				<mass type="text" description="Initial surface residue (kg/ha)">$simulation.initialCondition.residueWeight</mass>
+				<cnr type="text" description="C:N ratio of initial residue">$simulation.initialCondition.cnr</cnr>
+				<standing_fraction type="text" description="Fraction of residue standing">$simulation.initialCondition.standing_fraction</standing_fraction>
+			</surfaceom>
+			<fertiliser />
+      <irrigation name="Irrigation">
+        <automatic_irrigation type="list" listvalues="on,off" description="Automatic irrigation">$simulation.irrigation.automatic_irrigation</automatic_irrigation>
+        <asw_depth type="text" description="Depth to which ASW is calculated. (mm)">$simulation.irrigation.asw_depth</asw_depth>
+        <crit_fr_asw type="text" description="Fraction of ASW below which irrigation is applied (0-1.0)">$simulation.irrigation.crit_fr_asw</crit_fr_asw>
+        <irrigation_efficiency type="text" description="Efficiency of the irrigation. (0-1.0)">$simulation.irrigation.efficiency</irrigation_efficiency>
+        <irrigation_allocation type="list" listvalues="on,off" description="Allocation limits">$simulation.irrigation.allocation_limits</irrigation_allocation>
+        <allocation type="text" description="Allocation in mm">$simulation.irrigation.allocation</allocation>
+        <default_no3_conc type="text" description="Nitrate concentration (ppm N)">$simulation.irrigation.default_no3_conc</default_no3_conc>
+        <default_nh4_conc type="text" description="Ammonium concentration (ppm N)">$simulation.irrigation.default_nh4_conc</default_nh4_conc>
+        <default_cl_conc type="text" description="Chloride concentration (ppm Cl)">$simulation.irrigation.default_cl_conc</default_cl_conc>
+      </irrigation>
+      <$simulation.cropName>
+            <ini>
+               <filename>${simulation.cropName}.xml</filename>
+            </ini>
+      </$simulation.cropName>
+			<folder name="Manager folder">
+				<operations name="Operations">
+#foreach ($event in $simulation.management.events)        
+#if( $event.apsimAction )
+					<operation condition="start_of_day">
+						<date>$event.date</date>
+						<action>$event.apsimAction</action>
+					</operation>
+#end               
+#end        
+				</operations>
+        <manager name="Reset">
+          <ui>
+            <category type="category" description="When should a reset be done" />
+            <reset_date type="ddmmmdate" description="Enter date of reset (dd-mmm) : ">$simulation.reset.date</reset_date>
+            <category type="category" description="Reset details" />
+            <soilmodule type="modulename" description="Name of your soil module : ">Soil</soilmodule>
+            <surfaceommodule type="modulename" description="Name of your surface organic matter module : ">SurfaceOrganicMatter</surfaceommodule>
+            <resetWater type="yesno" description="Reset soil water?">$simulation.reset.water</resetWater>
+            <resetNitrogen type="yesno" description="Reset soil nitrogen?">$simulation.reset.nitrogen</resetNitrogen>
+            <resetSurfaceOM type="yesno" description="Reset surface organic matter?">$simulation.reset.surfaceOM</resetSurfaceOM>
+          </ui>
+          <script>
+            <text>
+         if (today = date('1-jan')) then
+            resetWater = '[resetWater]'
+            resetNitrogen  = '[resetNitrogen]'
+            resetSurfaceOM = '[resetSurfaceOM]'
+            if (resetWater = 'yes') then
+                '[soilmodule] Water' reset
+            endif
+            if (resetNitrogen = 'yes') then
+                '[soilmodule] Nitrogen' reset
+            endif
+            if (resetSurfaceOM = 'yes') then
+                '[surfaceommodule]' reset
+            endif
+            act_mods reseting
+         endif
+      </text>
+            <event>start_of_day</event>
+          </script>
+        </manager>
+  <manager name="Sow on a fixed date">
+          <ui>
+            <category type="category" description="Sowing criteria" />
+            <date type="text" description="Enter sowing date (dd-mmm) : ">$simulation.planting.pdate</date>
+            <category type="category" description="Sowing parameters" />
+            <crop type="crop" description="Enter name of crop to sow : ">$simulation.cropName</crop>
+            <density type="text" description="Enter sowing density  (plants/m2) : ">$simulation.planting.sowing_density</density>
+            <depth type="text" description="Enter sowing depth  (mm) : ">$simulation.planting.depth</depth>
+            <cultivar type="cultivars" description="Enter cultivar : ">$simulation.planting.cultivar</cultivar>
+            <class type="classes" description="Enter crop growth class : ">plant</class>
+            <row_spacing type="text" description="Enter row spacing (mm) : ">$simulation.planting.row_spacing</row_spacing>
+			##Edited code
+			<skiprow type="list" listvalues="solid, single, double" description="Skip row : ">$simulation.planting.skiprow</skiprow>
+			<ftn type="text" description="Enter Fertile Tiller Number : ">$simulation.planting.ftn</ftn>
+			##Edited code 
+          </ui>
+          <script>
+            <text>
+			ESW1 = ( (sw_dep(1)+sw_dep(2)) - (ll15_dep(1)+ll15_dep(2)) / (dul_dep(1)+dul_dep(2)) - (ll15_dep(1)+ll15_dep(2)) )
+            if (ESW1 &lt;0) then 
+             ESW1 = 0
+            endif
+            if (ESW1 &gt;1) then 
+             ESW1 = 1
+            endif
+
+			if ('[date]' = '1-Mar') then
+			 jday = 60
+			endif
+			if ('[date]' = '2-Mar') then
+			 jday = 61
+			endif
+			if ('[date]' = '3-Mar') then
+			 jday = 62
+			endif
+			if ('[date]' = '4-Mar') then
+			 jday = 63
+			endif
+			if ('[date]' = '5-Mar') then
+			 jday = 64
+			endif
+			if ('[date]' = '6-Mar') then
+			 jday = 65
+			endif
+			if ('[date]' = '7-Mar') then
+			 jday = 66
+			endif
+			if ('[date]' = '8-Mar') then
+			 jday = 67
+			endif
+			if ('[date]' = '9-Mar') then
+			 jday = 68
+			endif
+			if ('[date]' = '10-Mar') then
+			 jday = 69
+			endif
+			if ('[date]' = '11-Mar') then
+			 jday = 70
+			endif
+			if ('[date]' = '12-Mar') then
+			 jday = 71
+			endif
+			if ('[date]' = '13-Mar') then
+			 jday = 72
+			endif
+			if ('[date]' = '14-Mar') then
+			 jday = 73
+			endif
+			if ('[date]' = '15-Mar') then
+			 jday = 74
+			endif
+			if ('[date]' = '16-Mar') then
+			 jday = 75
+			endif
+			if ('[date]' = '17-Mar') then
+			 jday = 76
+			endif
+			if ('[date]' = '18-Mar') then
+			 jday = 77
+			endif
+			if ('[date]' = '19-Mar') then
+			 jday = 78
+			endif
+			if ('[date]' = '20-Mar') then
+			 jday = 79
+			endif
+			if ('[date]' = '21-Mar') then
+			 jday = 80
+			endif
+			if ('[date]' = '22-Mar') then
+			 jday = 81
+			endif
+			if ('[date]' = '23-Mar') then
+			 jday = 82
+			endif
+			if ('[date]' = '24-Mar') then
+			 jday = 83
+			endif
+			if ('[date]' = '25-Mar') then
+			 jday = 84
+			endif
+			if ('[date]' = '26-Mar') then
+			 jday = 85
+			endif
+			if ('[date]' = '27-Mar') then
+			 jday = 86
+			endif
+			if ('[date]' = '28-Mar') then
+			 jday = 87
+			endif
+			if ('[date]' = '29-Mar') then
+			 jday = 88
+			endif
+			if ('[date]' = '30-Mar') then
+			 jday = 89
+			endif
+			if ('[date]' = '31-Mar') then
+			 jday = 90
+			endif
+			if ('[date]' = '1-Apr') then
+			 jday = 91
+			endif
+			if ('[date]' = '2-Apr') then
+			 jday = 92
+			endif
+			if ('[date]' = '3-Apr') then
+			 jday = 93
+			endif
+			if ('[date]' = '4-Apr') then
+			 jday = 94
+			endif
+			if ('[date]' = '5-Apr') then
+			 jday = 95
+			endif
+			if ('[date]' = '6-Apr') then
+			 jday = 96
+			endif
+			if ('[date]' = '7-Apr') then
+			 jday = 97
+			endif
+			if ('[date]' = '8-Apr') then
+			 jday = 98
+			endif
+			if ('[date]' = '9-Apr') then
+			 jday = 99
+			endif
+			if ('[date]' = '10-Apr') then
+			 jday = 100
+			endif
+			if ('[date]' = '11-Apr') then
+			 jday = 101
+			endif
+			if ('[date]' = '12-Apr') then
+			 jday = 102
+			endif
+			if ('[date]' = '13-Apr') then
+			 jday = 103
+			endif
+			if ('[date]' = '14-Apr') then
+			 jday = 104
+			endif
+			if ('[date]' = '15-Apr') then
+			 jday = 105
+			endif
+			if ('[date]' = '16-Apr') then
+			 jday = 106
+			endif
+			if ('[date]' = '17-Apr') then
+			 jday = 107
+			endif
+			if ('[date]' = '18-Apr') then
+			 jday = 108
+			endif
+			if ('[date]' = '19-Apr') then
+			 jday = 109
+			endif
+			if ('[date]' = '20-Apr') then
+			 jday = 110
+			endif
+			if ('[date]' = '21-Apr') then
+			 jday = 111
+			endif
+			if ('[date]' = '22-Apr') then
+			 jday = 112
+			endif
+			if ('[date]' = '23-Apr') then
+			 jday = 113
+			endif
+			if ('[date]' = '24-Apr') then
+			 jday = 114
+			endif
+			if ('[date]' = '25-Apr') then
+			 jday = 115
+			endif
+			if ('[date]' = '26-Apr') then
+			 jday = 116
+			endif
+			if ('[date]' = '27-Apr') then
+			 jday = 117
+			endif
+			if ('[date]' = '28-Apr') then
+			 jday = 118
+			endif
+			if ('[date]' = '29-Apr') then
+			 jday = 119
+			endif
+			if ('[date]' = '30-Apr') then
+			 jday = 120
+			endif
+			if ('[date]' = '1-May') then
+			 jday = 121
+			endif
+			if ('[date]' = '2-May') then
+			 jday = 122
+			endif
+			if ('[date]' = '3-May') then
+			 jday = 123
+			endif
+			if ('[date]' = '4-May') then
+			 jday = 124
+			endif
+			if ('[date]' = '5-May') then
+			 jday = 125
+			endif
+			if ('[date]' = '6-May') then
+			 jday = 126
+			endif
+			if ('[date]' = '7-May') then
+			 jday = 127
+			endif
+			if ('[date]' = '8-May') then
+			 jday = 128
+			endif
+			if ('[date]' = '9-May') then
+			 jday = 129
+			endif
+			if ('[date]' = '10-May') then
+			 jday = 130
+			endif
+			if ('[date]' = '11-May') then
+			 jday = 131
+			endif
+			if ('[date]' = '12-May') then
+			 jday = 132
+			endif
+			if ('[date]' = '13-May') then
+			 jday = 133
+			endif
+			if ('[date]' = '14-May') then
+			 jday = 134
+			endif
+			if ('[date]' = '15-May') then
+			 jday = 135
+			endif
+			if ('[date]' = '16-May') then
+			 jday = 136
+			endif
+			if ('[date]' = '17-May') then
+			 jday = 137
+			endif
+			if ('[date]' = '18-May') then
+			 jday = 138
+			endif
+			if ('[date]' = '19-May') then
+			 jday = 139
+			endif
+			if ('[date]' = '20-May') then
+			 jday = 140
+			endif
+			if ('[date]' = '21-May') then
+			 jday = 141
+			endif
+			if ('[date]' = '22-May') then
+			 jday = 142
+			endif
+			if ('[date]' = '23-May') then
+			 jday = 143
+			endif
+			if ('[date]' = '24-May') then
+			 jday = 144
+			endif
+			if ('[date]' = '25-May') then
+			 jday = 145
+			endif
+			if ('[date]' = '26-May') then
+			 jday = 146
+			endif
+			if ('[date]' = '27-May') then
+			 jday = 147
+			endif
+			if ('[date]' = '28-May') then
+			 jday = 148
+			endif
+			if ('[date]' = '29-May') then
+			 jday = 149
+			endif
+			if ('[date]' = '30-May') then
+			 jday = 150
+			endif
+			if ('[date]' = '31-May') then
+			 jday = 151
+			endif
+			if ('[date]' = '1-Jun') then
+			 jday = 152
+			endif
+			if ('[date]' = '2-Jun') then
+			 jday = 153
+			endif
+			if ('[date]' = '3-Jun') then
+			 jday = 154
+			endif
+			if ('[date]' = '4-Jun') then
+			 jday = 155
+			endif
+			if ('[date]' = '5-Jun') then
+			 jday = 156
+			endif
+			if ('[date]' = '6-Jun') then
+			 jday = 157
+			endif
+			if ('[date]' = '7-Jun') then
+			 jday = 158
+			endif
+			if ('[date]' = '8-Jun') then
+			 jday = 159
+			endif
+			if ('[date]' = '9-Jun') then
+			 jday = 160
+			endif
+			if ('[date]' = '10-Jun') then
+			 jday = 161
+			endif
+			if ('[date]' = '11-Jun') then
+			 jday = 162
+			endif
+			if ('[date]' = '12-Jun') then
+			 jday = 163
+			endif
+			if ('[date]' = '13-Jun') then
+			 jday = 164
+			endif
+			if ('[date]' = '14-Jun') then
+			 jday = 165
+			endif
+			if ('[date]' = '15-Jun') then
+			 jday = 166
+			endif
+			if ('[date]' = '16-Jun') then
+			 jday = 167
+			endif
+			if ('[date]' = '17-Jun') then
+			 jday = 168
+			endif
+			if ('[date]' = '18-Jun') then
+			 jday = 169
+			endif
+			if ('[date]' = '19-Jun') then
+			 jday = 170
+			endif
+			if ('[date]' = '20-Jun') then
+			 jday = 171
+			endif
+			if ('[date]' = '21-Jun') then
+			 jday = 172
+			endif
+			if ('[date]' = '22-Jun') then
+			 jday = 173
+			endif
+			if ('[date]' = '23-Jun') then
+			 jday = 174
+			endif
+			if ('[date]' = '24-Jun') then
+			 jday = 175
+			endif
+			if ('[date]' = '25-Jun') then
+			 jday = 176
+			endif
+			if ('[date]' = '26-Jun') then
+			 jday = 177
+			endif
+			if ('[date]' = '27-Jun') then
+			 jday = 178
+			endif
+			if ('[date]' = '28-Jun') then
+			 jday = 179
+			endif
+			if ('[date]' = '29-Jun') then
+			 jday = 180
+			endif
+			if ('[date]' = '30-Jun') then
+			 jday = 181
+			endif
+			if ('[date]' = '1-Jul') then
+			 jday = 182
+			endif
+			if ('[date]' = '2-Jul') then
+			 jday = 183
+			endif
+			if ('[date]' = '3-Jul') then
+			 jday = 184
+			endif
+			if ('[date]' = '4-Jul') then
+			 jday = 185
+			endif
+			if ('[date]' = '5-Jul') then
+			 jday = 186
+			endif
+			if ('[date]' = '6-Jul') then
+			 jday = 187
+			endif
+			if ('[date]' = '7-Jul') then
+			 jday = 188
+			endif
+			if ('[date]' = '8-Jul') then
+			 jday = 189
+			endif
+			if ('[date]' = '9-Jul') then
+			 jday = 190
+			endif
+			if ('[date]' = '10-Jul') then
+			 jday = 191
+			endif
+			if ('[date]' = '11-Jul') then
+			 jday = 192
+			endif
+			if ('[date]' = '12-Jul') then
+			 jday = 193
+			endif
+			if ('[date]' = '13-Jul') then
+			 jday = 194
+			endif
+			if ('[date]' = '14-Jul') then
+			 jday = 195
+			endif
+			if ('[date]' = '15-Jul') then
+			 jday = 196
+			endif
+			if ('[date]' = '16-Jul') then
+			 jday = 197
+			endif
+			if ('[date]' = '17-Jul') then
+			 jday = 198
+			endif
+			if ('[date]' = '18-Jul') then
+			 jday = 199
+			endif
+			if ('[date]' = '19-Jul') then
+			 jday = 200
+			endif
+			if ('[date]' = '20-Jul') then
+			 jday = 201
+			endif
+			if ('[date]' = '21-Jul') then
+			 jday = 202
+			endif
+			if ('[date]' = '22-Jul') then
+			 jday = 203
+			endif
+			if ('[date]' = '23-Jul') then
+			 jday = 204
+			endif
+			if ('[date]' = '24-Jul') then
+			 jday = 205
+			endif
+			if ('[date]' = '25-Jul') then
+			 jday = 206
+			endif
+			if ('[date]' = '26-Jul') then
+			 jday = 207
+			endif
+			if ('[date]' = '27-Jul') then
+			 jday = 208
+			endif
+			if ('[date]' = '28-Jul') then
+			 jday = 209
+			endif
+			if ('[date]' = '29-Jul') then
+			 jday = 210
+			endif
+			if ('[date]' = '30-Jul') then
+			 jday = 211
+			endif
+			if ('[date]' = '31-Jul') then
+			 jday = 212
+			endif
+			
+            if (([crop].plant_status = 'out') AND ((day &gt;= jday+15) AND (day &lt;= jday+45)) AND (irrigation.automatic_irrigation = 'on') AND (((mint[7]+maxt[7])/2*7) &gt;= 11)) OR 
+			(([crop].plant_status = 'out') AND ((day &gt;= jday+15) AND (day &lt;= jday+45)) AND (rain[14] &gt;= 30) AND (((mint[7]+maxt[7])/2*7) &gt;= 11)) then 
+            planting_date=dd_mmm_yyyy
+			DOY=day_of_year
+              [crop] sow plants =[density], sowing_depth = [depth], cultivar = [cultivar], row_spacing = [row_spacing], crop_class = [class], skip = [skiprow], tiller_no_fertile = [ftn]
+            endif
+               </text>
+            <event>start_of_day</event>
+          </script>
+        </manager>
+#if( $simulation.fertilizer.automatic_fertilizer == "on" )
+        <manager name="Fertilise for potential yield">
+          <ui>
+            <category type="category" description="When should fertiliser be applied" />
+            <modulename type="modulename" description="In which crop is fertiliser being applied : ">$simulation.cropName</modulename>
+            <fert_criteria type="text" description="Maximum Amount of NO3 required in top 3 layers (kg/ha) : ">$simulation.fertilizer.fert_criteria</fert_criteria>
+            <fert_critical type="text" description="Critical Amount of NO3 in top 3 layers (kg/ha) : ">$simulation.fertilizer.fert_critical</fert_critical>
+            <category type="category" description="Fertiliser application details" />
+            <fertmodule type="modulename" description="Module used to apply the fertiliser : ">fertiliser</fertmodule>
+            <fert_depth type="text" description="fert_depth">$simulation.fertilizer.depth</fert_depth>
+            <fert_type type="list" listvalues="NO3_N, NH4_N, NH4NO3, urea_N, urea_no3, urea, nh4so4_n, rock_p, banded_p, broadcast_p" description="Fertiliser type : ">$simulation.fertilizer.type_auto</fert_type>
+          </ui>
+          <script>
+            <text>
+         if ([modulename].plant_status = 'alive') then
+            NO3_available = no3(1) + no3(2) + no3(3)
+            if (NO3_available &lt;= [fert_critical]) then
+               N_deficit = [fert_criteria] - NO3_available
+               '[fertmodule]' apply amount = N_deficit (kg/ha), depth = [fert_depth] (mm), type = [fert_type] ()
+            endif
+         endif
+  </text>
+            <event>start_of_day</event>
+          </script>
+        </manager>
+#else
+        <manager name="Fertilise N at sowing">
+          <ui>
+            <category type="category" description="When should fertiliser be applied" />
+            <modulename type="modulename" description="On which module should the event come from : ">$simulation.cropName</modulename>
+            <eventname type="text" description="On which event should fertiliser be applied : ">sowing</eventname>
+            <category type="category" description="Fertiliser application details" />
+            <fertmodule type="modulename" description="Module used to apply the fertiliser : ">fertiliser</fertmodule>
+            <fert_depth type="text" description="fert_depth">$simulation.fertilizer.depth</fert_depth>
+            <fert_amount_sow type="text" description="Amount of starter fertiliser at sowing (kg/ha) : ">$simulation.fertilizer.initial_amount</fert_amount_sow>
+            <fert_type_sow type="list" listvalues="NO3_N, NH4_N, NH4NO3, urea_N, urea_no3, urea, nh4so4_n, rock_p, banded_p, broadcast_p" description="Sowing fertiliser type : ">$simulation.fertilizer.type</fert_type_sow>
+          </ui>
+          <script>
+            <text>
+        [fertmodule] apply amount = [fert_amount_sow] (kg/ha), depth = [fert_depth] (mm), type = [fert_type_sow]
+            </text>
+            <event>[modulename].[eventname]</event>
+          </script>
+        </manager>
+        <manager name="Fertilise on DAS">
+          <ui>
+            <category type="category" description="When should fertiliser be applied" />
+            <modulename type="modulename" description="On which crop is fertiliser being applied : ">$simulation.cropName</modulename>
+            <fert_das type="text" description="Enter fertiliser days after sowing  : ">$simulation.fertilizer.days_after_sowing</fert_das>
+            <fert_criteria type="text" description="Amount of N required in top 3 layers (kg/ha) : ">$simulation.fertilizer.subsequent_amount</fert_criteria>
+            <category type="category" description="Fertiliser application details" />
+            <fertmodule type="modulename" description="Module used to apply the fertiliser : ">fertiliser</fertmodule>
+            <fert_depth type="text" description="fert_depth">$simulation.fertilizer.depth</fert_depth>
+            <fert_type type="list" listvalues="NO3_N, NH4_N, NH4NO3, urea_N, urea_no3, urea, nh4so4_n, rock_p, banded_p, broadcast_p" description="Fertiliser type : ">$simulation.fertilizer.type</fert_type>
+          </ui>
+          <script>
+            <text>
+         if ([modulename].DaysAfterSowing = [fert_das]) then
+            '[fertmodule]' apply amount = [fert_criteria] (kg/ha), depth = [fert_depth] (mm), type = [fert_type] ()
+         endif </text>
+            <event>start_of_day</event>
+          </script>
+        </manager>
+#end
+        <manager name="Harvesting rule">
+          <ui>
+            <category type="category" description="Harvesting criteria" />
+            <crop type="crop" description="Enter name of crop to harvest when ripe : ">$simulation.cropName</crop>
+          </ui>
+		<script>
+          <text>
+            if ([crop].DaysAfterSowing = 40) then
+              act_mods das40
+            endif
+			if ([crop].DaysAfterSowing = 80) then
+              act_mods das80
+            endif
+			if (today = 91) then
+              act_mods dayApr
+            endif
+			if (today = 161) then
+              act_mods dayJun
+            endif
+			if (today = 231) then
+              act_mods dayAug
+            endif
+			if (today = 301) then
+              act_mods dayOct
+            endif
+          </text>
+          <event>start_of_day</event>
+        </script>
+          <script>
+            <text>if (DaysAfterSowing = 120) or [crop].plant_status = 'dead' or [crop].StageName = 'harvest_ripe' then
+					[crop] harvest
+					[crop] end_crop
+                  endif
+            </text>
+            <event>end_of_day</event>
+          </script>
+        </manager>
+			</folder>
+      <manager name="derived variables">
+        <script>
+		    <text>rue = 0
+            </text>
+			<event>init</event>
+		</script>
+		<script>
+          <text>
+		  AET = es + ep
+		  AWC = dul_dep() - ll15_dep()
+		  dlT = sw_supply * transp_eff
+		  dlRUE = rue * radn_int
+          T_average = (maxt + mint) * 0.5 
+          soil_co2 = dlt_biom_c_atm() + dlt_fom_c_atm() + dlt_hum_c_atm() + dlt_res_c_atm
+          </text>
+          <event>start_of_day</event>
+        </script>
+        <script>
+          <text>
+          </text>
+          <event>end_of_day</event>
+        </script>
+      </manager>
+      <tracker>
+        <variable>sum of irrigation on end_of_day from sowing to harvesting as IrrigationIn</variable>
+        <variable>sum of ep on end_of_day from sowing to harvesting as WaterUse</variable>
+        <variable>sum of AET on end_of_day from sowing to harvesting as actual_ET</variable>
+        <variable>sum of fertiliser on end_of_day from sowing to harvesting as FertiliserIn</variable>
+        <variable>sum of leach_no3 on end_of_day from sowing to harvesting as NO3_leaching</variable>
+        <variable>sum of radn on end_of_day from sowing to harvesting as RadiationIn</variable>
+        <variable>sum of n2o_atm() on end_of_day from sowing to harvesting as N2OemissionIn</variable>
+        <variable>sum of n2o_atm() on end_of_day from reported to now as N2Oemission_year</variable>
+        <variable>sum of soil_co2 on end_of_day from sowing to harvesting as CO2emissionIn</variable>
+        <variable>sum of soil_co2 on end_of_day from reported to now as CO2emission_year</variable>
+        <variable>average of T_average on end_of_day from sowing to harvesting as TempIn</variable>
+        <variable>average of T_average on end_of_day from reported to now as Temp_year</variable>
+        <variable>sum of rain on end_of_day from sowing to harvesting as RainIn</variable>
+        <variable>sum of rain on end_of_day from reported to now as Rain_year</variable>
+        <variable>sum of radn on end_of_day from reported to now as Radiation_year</variable>
+        <variable>average of nfact_photo on end_of_day from sowing to harvesting as N_stress_photo</variable>
+		<variable>average of nfact_expan on end_of_day from sowing to harvesting as N_stress_expan</variable>
+		<variable>average of swdef_photo on end_of_day from sowing to harvesting as sw_stress_photo</variable>
+		<variable>average of swdef_expan on end_of_day from sowing to harvesting as sw_stress_expan</variable>
+		<variable>sum of DeltaTTfm on end_of_day from flowering to harvesting as TT</variable>
+		<variable>average of MinT on end_of_day from sowing to harvesting as aMinT</variable>
+		<variable>average of MaxT on end_of_day from sowing to harvesting as aMaxT</variable>
+		<variable>average of AWC on end_of_day from sowing to harvesting as PAWC</variable>
+		<variable>sum of ep on end_of_day from sowing to harvesting as WU</variable>
+		<variable>sum of eo on end_of_day from sowing to harvesting as potential_ET</variable>
+		<variable>sum of radn_int on end_of_day from sowing to harvesting as radInt</variable>
+		<variable>sum of radn on end_of_day from sowing to das40 as rad40DAS</variable>
+		<variable>sum of radn on end_of_day from das40 to das80 as rad80DAS</variable>
+		<variable>sum of radn on end_of_day from das80 to harvesting as radHarv</variable>
+		<variable>average of T_average on end_of_day from sowing to das40 as temp40DAS</variable>
+		<variable>average of T_average on end_of_day from das40 to das80 as temp80DAS</variable>
+		<variable>average of T_average on end_of_day from das80 to harvesting as tempHarv</variable>
+		<variable>sum of rain on end_of_day from sowing to das40 as rain40DAS</variable>
+		<variable>sum of rain on end_of_day from das40 to das80 as rain80DAS</variable>
+		<variable>sum of rain on end_of_day from das80 to harvesting as rainHarv</variable>
+		<variable>sum of rain on end_of_day from dayApr to dayJun as rain1</variable>
+		<variable>sum of rain on end_of_day from dayJun to dayAug as as rain2</variable>
+		<variable>sum of rain on end_of_day from dayAug to dayOct as as rain3</variable>
+	    <variable>average of ESW1 on end_of_day from sowing to harvesting as ESW1av</variable>
+		<variable>average of swdef_expan on end_of_day from sowing to das40 as sw0_40</variable>
+		<variable>average of swdef_expan on end_of_day from das40 to das80 as sw40_80</variable>
+		<variable>average of swdef_expan on end_of_day from das80 to harvesting as sw80_harv</variable>
+		<variable>average of temp_stress on end_of_day from sowing to das40 as tp0_40</variable>
+		<variable>average of temp_stress on end_of_day from das40 to das80 as tp40_80</variable>
+		<variable>average of temp_stress on end_of_day from das80 to harvesting as tp80_harv</variable>
+		<variable>sum of radn_int on end_of_day from sowing to das40 as ri0_40</variable>
+		<variable>sum of radn_int on end_of_day from das40 to das80 as ri40_80</variable>
+		<variable>sum of radn_int on end_of_day from das80 to harvesting as ri80_harv</variable>
+      </tracker>
+			<outputfile>
+				<filename output="yes">Generic.out</filename>
+				<title>AgMIP</title>
+				<variables name="Variables">
+#foreach ($var in $simulation.output_variables)
+					<variable>$var.name</variable>
+#end
+				</variables>
+				<events name="Reporting Frequency">
+					<event>$simulation.reporting_frequency</event>
+				</events>
+				<Graph name="Yield and Biomass">
+					<Legend>
+						<CheckedTitles> biomass</CheckedTitles>
+						<CheckedTitles> yield</CheckedTitles>
+					</Legend>
+					<Plot>
+						<SeriesType>Solid line</SeriesType>
+						<PointType>Circle</PointType>
+						<colour/>
+						<X>Date</X><Y>biomass</Y><Y>yield</Y>
+						<YRight>lai</YRight>
+						<GDApsimFileReader name="ApsimFileReader" />
+					</Plot>
+				</Graph>		
+			</outputfile>       
+		</area>
+	</simulation>
+  #end
+</folder>
