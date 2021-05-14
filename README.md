@@ -52,7 +52,7 @@ dependencies installed by a singularity container without
 the need to install the soft dependencies manually (as in pSIMS).
 Also, we updated some packages were obsolete.
 
-The singularity images to run pSIMSV2 are hosted
+The singularity image to run pSIMSV2 are hosted
 [here](http://qaafi-hss8hy2.instrument.net.uq.edu.au/singularity-images/) 
 for APSIM Classic 7.9. All examples below are an implementation of pSIMSV2 for APSIM 7.9.  
 
@@ -72,7 +72,7 @@ Using the APSIM gridded platform (pAPSIM) within pSIMSV2, four genotypes [grain 
 potential areas for energy sorghum in the US under rainfed and irrigated conditions 
 over 30 years.
 
-Software dependencies installed by the singularity container 
+Software dependencies installed by the singularity image 
 ==============
 
 _Note: this packages are in the requirements.txt file at psims/pysims/_
@@ -112,80 +112,48 @@ _Note: this packages are in the requirements.txt file at psims/pysims/_
 * xarray==0.7.1
 * XlsxWriter==0.8.4
 
-Steps to run pSIMS in a Unix environment
-==============
-
-_Before to run pSIMSV2 you should check:_
-
-* If you are running pSIMSV2 remotely, check all files were updated in the remote PC.
-* In params file check the number of scenarios and the exported variables.
-* Check location of psims folder.
-* Check location of sh files that runs apsim.
-* Check refdata (template.apsim and Sorghum.xml) if some scripts were changed.
-* Check campaign (exp_template.json) data aligns with scenario number in params file.
-* Be carefull with the commas when the variables are specified in the params file. Do not need 
-a comma after the last variable (e.g. rain, yield, biomass: mm, kg/ha, kg/ha) 
-
-## Run in a local computer
-
-_Note: Be sure you type sudo -s and put the password before to start._
-
-#### _Run a single lat/lon combination_
-```
-/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
-```
-
-#### _Run a single tile_
-```
-/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 
-```
-#### _Run several tiles together_
-```
-./psims -s local -p /psims/pysims/params.apsim.sample -c .../campaign/sorghum/ -t .../TileLists/test -r jon
-```
-
-## Run in a computer via remote control through Ubuntu
-
-#### _Run a single lat/lon combination_
-```
-.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
-```
-
-#### _Run a single tile_
-```
-.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
-```
-
-#### _Run several tiles together_
-```
-singularity exec -B /data:/data -B /run/shm:/run/shm .../PSIMs.Apsim79.sapp .../psims/psims -s local -p .../paramsFiles/PetePC/params.apsim.sample -c .../campaign/created_campaign/test3/ -t .../TileLists/sorghumEnergy
-```
-
-## Run on a cluster (HPC)
-
-#### _Run a single lat/lon combination_
-```
-export PYTHONNOUSERSITE=1
-.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173 
-```
-#### _Run a single tile_
-
-```
-export PYTHONNOUSERSITE=1
-.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
-```
-Arguments description
+Data inputs
 ==================
 
-_Note: this description was done for the code implemented to run pSIMSV2 in a computer through remote control._
+Data inputs are provided for download and other are hosted in this repo.
 
-**-s:** indicates if the run is implemented in a computer (local) or in a cluster (cluster).
+### Climate and soil data
 
-**-p:** indicates the parameter file location (e.g. .../paramsFiles/PetePC/params.apsim.sample)
+The developers of pSIMS have made two full global gridded datasets available to pSIMS users:
 
-**-c:** indicates the campaign file location (e.g. .../campaign/created_campaign/test3/)
+* _Climate:_ [AgMERRA Climate Forcing Dataset for Agricultural Modeling](https://data.giss.nasa.gov/impacts/agmipcf/#:~:text=The%20AgMERRA%20and%20AgCFSR%20climate,variables%20required%20for%20agricultural%20models.)
+* _Soil:_ [Harmonized World Soil Database](http://www.fao.org/soils-portal/data-hub/soil-maps-and-databases/harmonized-world-soil-database-v12/en/)
 
-**-t:** indicates the tile file location (e.g. .../TileLists/sorghumEnergy)
+Due to the size of these datasets, they are available
+only via Globus online. If you do not already have a
+Globus account, you may create one at globus.org. The endpoint name
+is davidk#psims. Harmonized World Soil Database files are available
+in the /soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the
+/clim/ggcmi/agmerra directory.
+
+You can also create your own datasets (or use others) and pass it to this tool.
+1. Download and extract climate dataset from (if you want to use AgMERRA climate data)
+   - http://users.rcc.uchicago.edu/~davidkelly999/psims/agmerra.tar.gz (19GB)
+2. Download and extract soil dataset from (if you want to use the FAO Harmonized World Soil Database v 1.2)
+   - http://users.rcc.uchicago.edu/~davidkelly999/psims/gsde.tar.gz (1.8GB)
+
+### Campaign file
+
+3. Download and extract campaign dataset from
+   - http://users.rcc.uchicago.edu/~davidkelly999/psims/campaign.tar.gz (474KB)
+
+### APSIM template and XML files
+
+4. Reference dataset is provided in the folder **refdata** in this repo
+
+### Tile list
+
+5. An example tilelists is provided in the **tilelist** folder in this repo.
+
+### Mask
+
+6. Download and extract masks from
+   - http://users.rcc.uchicago.edu/~davidkelly999/psims/masks.tar.gz (12KB)
 
 Parameter file
 ==================
@@ -418,9 +386,6 @@ Below is an example of a **Campaign.nc4** for a sorghum experiment. In this expe
 irrigation (automatic_irrigation) and genotype (cultivar). We combined 2 irrigation strategies, 4 genotypes and variable 
 planting date by tile.
 
-_Note: A complete description and Python codes to create a **Campaign.nc4**
-is provided in the pSIMSV2-Tools folder in this repo._
-
 ```
 {
   dimensions:
@@ -462,6 +427,22 @@ Below we provide a visual example of the variable planting date across a region 
 
 ![image](/img/pdate.jpg)
 
+Template file
+===========
+
+In the **refdata** folder there is an apsim file (**.apsim**) called **template.apsim**. This file is the template apsim file pSIMSV2
+will use for every single simulation to create apsim outputs. Here is the place were specific output variables need to be created, 
+for example the following code calculates the accumulated irrigation applied from sowing to harvest:
+
+```
+<variable>sum of irrigation on end_of_day from sowing to harvesting as IrrigationIn</variable> 
+```
+
+Then this variable need to be specified in the **parameter** file as an output as 'IrrigationIn' to be reported in the APSIM report.
+
+The **refdata** folder also contains template apsim XML files for all crops. Any change to the APSIM code (for example the
+implementation of new cultivar parameters) need to coded here.
+
 Mask file
 ===========
 
@@ -497,22 +478,6 @@ aggregator:
     levels: gadm0
 ```
 
-Climate and soil data
-==============
-The developers of pSIMS have made two full global gridded datasets available to pSIMS users:
-
-* _Climate:_ AgMERRA Climate Forcing Dataset for Agricultural Modeling
-* _Soil:_ Harmonized World Soil Database
-
-Due to the size of these datasets, they are available
-only via Globus online. If you do not already have a
-Globus account, you may create one at globus.org. The endpoint name
-is davidk#psims. Harmonized World Soil Database files are available
-in the /soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the
-/clim/ggcmi/agmerra directory.
-
-You can also create your own datasets (or use others) and pass it to this tool.
-
 Tilelists
 =========
 
@@ -530,6 +495,81 @@ for 0024_0044 (**latidx**=24; **lonidx**=44):
 * Latitude (°) -->  90 - (2 * **latidx**) = 42 °N
 * Longitude (°) --> -180 (2 * **lonidx**) = -92 °E
 
+
+Steps to run pSIMS in a Unix environment
+==============
+
+_Before to run pSIMSV2 you should check:_
+
+* If you are running pSIMSV2 remotely, check all files were updated in the remote PC.
+* In params file check the number of scenarios and the exported variables.
+* Check location of psims folder.
+* Check location of sh files that runs apsim.
+* Check refdata (template.apsim and Sorghum.xml) if some scripts were changed.
+* Check campaign (exp_template.json) data aligns with scenario number in params file.
+* Be carefull with the commas when the variables are specified in the params file. Do not need 
+a comma after the last variable (e.g. rain, yield, biomass: mm, kg/ha, kg/ha) 
+
+## Run in a local computer
+
+_Note: Be sure you type sudo -s and put the password before to start._
+
+#### _Run a single lat/lon combination_
+```
+/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
+```
+
+#### _Run a single tile_
+```
+/psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 
+```
+#### _Run several tiles together_
+```
+./psims -s local -p /psims/pysims/params.apsim.sample -c .../campaign/sorghum/ -t .../TileLists/test -r jon
+```
+
+## Run in a computer via remote control through Ubuntu
+
+#### _Run a single lat/lon combination_
+```
+.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173
+```
+
+#### _Run a single tile_
+```
+.../psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
+```
+
+#### _Run several tiles together_
+```
+singularity exec -B /data:/data -B /run/shm:/run/shm .../PSIMs.Apsim79.sapp .../psims/psims -s local -p .../paramsFiles/PetePC/params.apsim.sample -c .../campaign/created_campaign/test3/ -t .../TileLists/sorghumEnergy
+```
+
+## Run on a cluster (HPC)
+
+#### _Run a single lat/lon combination_
+```
+export PYTHONNOUSERSITE=1
+.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044 --latidx 0096 --lonidx 0173 
+```
+#### _Run a single tile_
+
+```
+export PYTHONNOUSERSITE=1
+.../shfiles/pysims.sh --param .../params.apsim.sample --campaign .../campaign/created_campaign/test2/ --tlatidx 0024 --tlonidx 0044
+```
+Arguments description
+==================
+
+_Note: this description was done for the code implemented to run pSIMSV2 in a computer through remote control._
+
+**-s:** indicates if the run is implemented in a computer (local) or in a cluster (cluster).
+
+**-p:** indicates the parameter file location (e.g. .../paramsFiles/PetePC/params.apsim.sample)
+
+**-c:** indicates the campaign file location (e.g. .../campaign/created_campaign/test3/)
+
+**-t:** indicates the tile file location (e.g. .../TileLists/sorghumEnergy)
 
 Output Files
 ============
@@ -555,7 +595,7 @@ a region in the US at 30 arc-minute resolution. This map is for a given year and
 Data visualisation
 ============
 
-The analysis of this work was done in Python (see pSIMSV2-Tools folder in this repo). However, fast visualisation of the
+Fast visualisation of the PSIMSV2
 outputs (and campaign files) can be done using [Panoply](https://www.giss.nasa.gov/tools/panoply/).
 Panoply plots geo-referenced and other arrays from netCDF, HDF, GRIB, and other datasets.
 Panoply is a cross-platform application that runs on Macintosh, Windows, Linux and other desktop computers. 
