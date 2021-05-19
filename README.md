@@ -75,6 +75,15 @@ over 30 years.
 Software dependencies installed by the singularity image 
 ==============
 
+This software list is installed automatically when the singularity image is used for runs including several
+tiles. When the user is testing single tiles and not using singularity, it needs to be installed manually.
+
+* apsim 7.9
+* mono
+* swift 0.95
+* nco 4.4.3
+* netcdf4
+
 _Note: this packages are in the requirements.txt file at psims/pysims/_
 
 * python==2.7
@@ -524,6 +533,10 @@ _Note: Be sure you type sudo -s and put the password before to start._
 /psims/pysims/pysims.py --param .../params.apsim.sample --campaign .../campaign/created_campaign/test3/ --tlatidx 0024 --tlonidx 0044 
 ```
 #### _Run several tiles together_
+
+In this case the command is looking for the **psims** folder because for more than a tile swift is implemented to
+apply parallel computing. Therefore, remember to install swift in your computer before to run several tiles together.
+
 ```
 ./psims -s local -p /psims/pysims/params.apsim.sample -c .../campaign/sorghum/ -t .../TileLists/test -r jon
 ```
@@ -541,6 +554,9 @@ _Note: Be sure you type sudo -s and put the password before to start._
 ```
 
 #### _Run several tiles together_
+
+In this command, pSIMSV2 is using swift to do runs in parallel, so it was already installed by the singularity image.
+
 ```
 singularity exec -B /data:/data -B /run/shm:/run/shm .../PSIMs.Apsim79.sapp .../psims/psims -s local -p .../paramsFiles/PetePC/params.apsim.sample -c .../campaign/created_campaign/test3/ -t .../TileLists/sorghumEnergy
 ```
