@@ -78,6 +78,7 @@ Software dependencies installed by the singularity image
 This software list is installed automatically when the singularity image is used for runs including several
 tiles. When the user is testing single tiles and not using singularity, it needs to be installed manually.
 
+* python==2.7
 * apsim 7.9
 * mono
 * swift 0.95
@@ -86,7 +87,6 @@ tiles. When the user is testing single tiles and not using singularity, it needs
 
 _Note: this packages are in the requirements.txt file at psims/pysims/_
 
-* python==2.7
 * numpy==1.15
 * airspeed==0.5.4.dev20150515
 * cachetools==0.8.0
