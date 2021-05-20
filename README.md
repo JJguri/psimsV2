@@ -126,9 +126,9 @@ Data inputs
 
 Data inputs are provided for download and other are hosted in this repo.
 
-### Climate and soil data
+### Global climate and soil data (30 arc-minute resolution)
 
-The developers of pSIMS have made two full global gridded datasets available to pSIMS users:
+Two full global gridded dataset available for pSIMS users:
 
 * _Climate:_ [AgMERRA Climate Forcing Dataset for Agricultural Modeling](https://data.giss.nasa.gov/impacts/agmipcf/#:~:text=The%20AgMERRA%20and%20AgCFSR%20climate,variables%20required%20for%20agricultural%20models.)
 * _Soil:_ [Harmonized World Soil Database](http://www.fao.org/soils-portal/data-hub/soil-maps-and-databases/harmonized-world-soil-database-v12/en/)
@@ -137,14 +137,23 @@ Due to the size of these datasets, they are available
 only via Globus online. If you do not already have a
 Globus account, you may create one at globus.org. The endpoint name
 is davidk#psims. Harmonized World Soil Database files are available
-in the /soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the
-/clim/ggcmi/agmerra directory.
+in the .../soils/hwsd200.wrld.30min directory. AgMERRA climate data is available in the .../clim/ggcmi/agmerra directory.
 
 You can also create your own datasets (or use others) and pass it to this tool.
 1. Download and extract climate dataset from (if you want to use AgMERRA climate data)
    - http://users.rcc.uchicago.edu/~davidkelly999/psims/agmerra.tar.gz (19GB)
 2. Download and extract soil dataset from (if you want to use the FAO Harmonized World Soil Database v 1.2)
    - http://users.rcc.uchicago.edu/~davidkelly999/psims/gsde.tar.gz (1.8GB)
+
+### Climate data for the USA (1 km resolution)
+
+A template to convert [Daymet climate data](https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1840) to a pSIMS format was 
+created by the authors of this repo using the [PyDaymet](https://pypi.org/project/pydaymet/) 
+Python package (contact them for more information). For PyDaymet information please 
+visit the [GitHub](https://github.com/cheginit/pydaymet) repo.
+
+This template aggregates climate daymet data from 1 km resolution to 30 arc-minute resolution to be inputted in pSIMS
+and following the format established in psims2met.py (see translators folder in this repo).
 
 ### Campaign file
 
