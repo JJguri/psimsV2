@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\pysims"
+    "\\pysims",
+    "\\pysims\\translators",
+    "\\pysims\\translators\\apsim79"
   ],
-  "SelectedNode": "\\pysims\\pysims.py",
+  "SelectedNode": "\\pysims\\translators\\apsim79\\psims2met.py",
   "PreviewInSolutionExplorer": false
 }
