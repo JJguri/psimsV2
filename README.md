@@ -53,7 +53,7 @@ the need to install the soft dependencies manually (as in pSIMS).
 Also, we updated some packages were obsolete.
 
 The singularity image to run pSIMSV2 are hosted
-[here](http://qaafi-hss8hy2.instrument.net.uq.edu.au/singularity-images/) 
+[here](https://cloudstor.aarnet.edu.au/plus/s/mb8emd4P5nPRBU2) or [here](https://www.dropbox.com/s/hczfw964jaqi24p/PSIMs.Apsim79.sapp?dl=0)
 for APSIM Classic 7.9. All examples below are an implementation of pSIMSV2 for APSIM 7.9.  
 
 About the research project
